@@ -1,2 +1,4 @@
-# demo-nextjs-react-dashboard
-Demo app build with NextJS and React
+# Propel Demo Dashboard - NextJS & React
+
+
+This demo app is simple dashboads for the TPCH dataset
