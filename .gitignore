@@ -1,3 +1,7 @@
+#environment variables
+.env.local
+.DS_Store
+
 # Logs
 logs
 *.log
