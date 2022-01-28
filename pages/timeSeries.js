@@ -62,9 +62,9 @@ export default function TimeSeries({ timeSeries }) {
         metric (id: $id) {
           timeSeries (input: {
             timeRange: {
-              relative: LAST_3_MONTHS
+              relative: LAST_YEAR
             }
-            granularity: DAY
+            granularity: WEEK
           }) {
             labels
             values
