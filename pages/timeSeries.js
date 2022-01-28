@@ -35,7 +35,7 @@ export default function TimeSeries({ timeSeries }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-      <h1>Time Series</h1>
+      <h1>Metric Time Series</h1>
       <p>California COVID cases</p>
       <div className="grid">
       <ReactECharts option={options} />
