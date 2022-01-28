@@ -17,7 +17,7 @@ export default function Counter({ counter }) {
         startAngle: 180,
         endAngle: 0,
         min: 0,
-        max: 100000,
+        max: 1000000,
         splitNumber: 1,
         progress: {
           show: true,
