@@ -19,10 +19,10 @@ export default function Home() {
         </p>
 
         <div className="grid">
-        <Link href="/dashboard">
+        <Link href="/timeSeries">
           <a href="https://nextjs.org/docs" className="card">
-            <h3>Dashboard &rarr;</h3>
-            <p>Operational product dashboard for orders and sales.</p>
+            <h3>Time Series &rarr;</h3>
+            <p>Build your first Time Series chart!</p>
           </a>
           </Link>
           <Link href="/dashboard">
