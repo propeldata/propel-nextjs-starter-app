@@ -13,14 +13,19 @@ export default function TimeSeries({ timeSeries }) {
   const options = {
     xAxis: {
       data: timeSeries.labels,
+      axisTick: {
+        alignWithLabel: true
+      }
     },
     yAxis: {
       type: 'value',
     },
     series: [
       {
+        name: 'Cases',
+        type: 'bar',
+        barWidth: '75%',
         data: timeSeries.values,
-        type: 'line',
       },
     ],
     tooltip: {
