@@ -15,20 +15,20 @@ export default function Home() {
         </h1>
 
         <p className="description">
-          Get started by editing <code>pages/dashboard.js</code>
+          How developers build data products.
         </p>
 
         <div className="grid">
         <Link href="/timeSeries">
-          <a href="https://nextjs.org/docs" className="card">
+          <a href="/timeSeries" className="card">
             <h3>Time Series &rarr;</h3>
-            <p>Build your first Time Series chart!</p>
+            <p>Build your first Time Series chart from your Metrics!</p>
           </a>
           </Link>
-          <Link href="/dashboard">
-          <a href="https://nextjs.org/docs" className="card">
-            <h3>Dashboard &rarr;</h3>
-            <p>Orders and sales sample dashboard</p>
+          <Link href="/counter">
+          <a href="/counter" className="card">
+            <h3>Counter &rarr;</h3>
+            <p>Build your first metric counter visualization!</p>
           </a>
           </Link>
         </div>
