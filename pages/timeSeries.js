@@ -5,6 +5,7 @@ import Layout from '../components/layout'
 import { GraphQLClient, request, gql } from 'graphql-request'
 import { ClientCredentials } from "simple-oauth2";
 import ReactECharts from 'echarts-for-react';
+import * as echarts from 'echarts';
 
 
 
@@ -12,7 +13,14 @@ export default function TimeSeries({ timeSeries }) {
   console.log('timeSeries', timeSeries);
   const options = {
     xAxis: {
+      type: 'category',
       data: timeSeries.labels,
+      axisLabel: {
+        rotate: 30,
+        formatter: function (value) {
+          return echarts.format.formatTime('yyyy-MM-dd', value);
+        }
+      },
       axisTick: {
         alignWithLabel: true
       }
