@@ -2,14 +2,14 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { GraphQLClient, request, gql } from 'graphql-request'
+import { GraphQLClient, gql } from 'graphql-request'
 import { ClientCredentials } from 'simple-oauth2'
 import ReactECharts from 'echarts-for-react'
 
 import { Layout } from '../components'
-import chartBaseConfig from '../utils/counterBaseConfig'
+import timeSeriesBaseConfig from '../utils/timeSeriesBaseConfig'
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
   /**
    * Set the config for the OAuth2 client
    */
@@ -48,14 +48,16 @@ export async function getServerSideProps() {
  * Set the query
  */
 const QUERY = gql`
-  query caseQueryCounter ($id: ID!) {
+  query caseQuery ($id: ID!) {
     metric (id: $id) {
-      counter (input: {
+      timeSeries (input: {
         timeRange: {
-          relative: PREVIOUS_WEEK
+          relative: LAST_YEAR
         }
+        granularity: WEEK
       }) {
-        value
+        labels
+        values
       }
     }
   }
@@ -64,9 +66,9 @@ const QUERY = gql`
 /**
  * Create a graphql client
  */
-const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
+ const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
-export default function Counter({ accessToken }) {
+export default function TimeSeries({ accessToken }) {
   const [options, setOptions] = React.useState()
 
   React.useEffect(() => {
@@ -81,14 +83,16 @@ export default function Counter({ accessToken }) {
         })
 
         setOptions({
-          series: [{
-            ...chartBaseConfig,
-            data: [
-              {
-                value: metric.counter.value
-              }
-            ]
-          }]
+          ...timeSeriesBaseConfig,
+          xAxis: {
+            data: metric.timeSeries.labels,
+          },
+          series: [
+            {
+              data: metric.timeSeries.values,
+              type: 'line',
+            },
+          ]
         })
       } catch (error) {}
     }
@@ -102,7 +106,7 @@ export default function Counter({ accessToken }) {
     <>
       <Head>
         <title>Propel Sample Time Series</title>
-        <link rel="icon" href="/favicon.ico" />
+        <link rel='icon' href="/favicon.ico" />
       </Head>
       <Layout
         appLink={(
@@ -112,11 +116,11 @@ export default function Counter({ accessToken }) {
         )}
       >
         <h1>
-        Metric Counter
+          Metric Time Series
         </h1>
 
         <p>
-        California COVID cases yesterday
+          California COVID cases
         </p>
 
         {!!options && <ReactECharts option={options} />}
