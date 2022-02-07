@@ -112,11 +112,11 @@ export default function Counter({ accessToken }) {
         )}
       >
         <h1>
-        Metric Counter
+          Metric Counter
         </h1>
 
         <p>
-        California COVID cases yesterday
+          California COVID cases yesterday
         </p>
 
         {!!options && <ReactECharts option={options} />}

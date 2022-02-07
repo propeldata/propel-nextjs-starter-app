@@ -24,9 +24,10 @@
 }
 
 .main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-align: -webkit-center;
+  text-align: -moz-center;
 
   padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px var(--sides-padding);
 }
