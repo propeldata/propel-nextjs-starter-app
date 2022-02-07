@@ -5,6 +5,10 @@ import Head from 'next/head'
 import { GraphQLClient, gql } from 'graphql-request'
 import { ClientCredentials } from 'simple-oauth2'
 import ReactECharts from 'echarts-for-react'
+import dayjs from 'dayjs'
+import TextField from '@mui/material/TextField'
+import DateRangePicker from '@mui/lab/DateRangePicker'
+import Box from '@mui/material/Box'
 
 import { Layout } from '../components'
 import timeSeriesBaseConfig from '../utils/timeSeriesBaseConfig'
@@ -70,6 +74,7 @@ const QUERY = gql`
 
 export default function TimeSeries({ accessToken }) {
   const [options, setOptions] = React.useState()
+  const [timeRange, setTimeRange] = React.useState([null, null])
 
   React.useEffect(() => {
     async function fetchData () {
@@ -86,12 +91,17 @@ export default function TimeSeries({ accessToken }) {
           ...timeSeriesBaseConfig,
           xAxis: {
             data: metric.timeSeries.labels,
+            axisLabel: {
+              formatter: (function(value){
+                  return dayjs(value).format('MM/DD/YY');
+              })
+            }
           },
           series: [
             {
               data: metric.timeSeries.values,
-              type: 'line',
-            },
+              type: 'bar'
+            }
           ]
         })
       } catch (error) {}
@@ -101,6 +111,19 @@ export default function TimeSeries({ accessToken }) {
       fetchData()
     }
   }, [accessToken])
+
+  React.useEffect(() => {
+    if (timeRange[0] && timeRange[1]) {
+      setOptions({
+        ...options,
+        xAxis: {
+          ...options.xAxis,
+          min: timeRange[0].toJSON(),
+          max: timeRange[1].toJSON()
+        }
+      })
+    }
+  }, [timeRange])
 
   return (
     <>
@@ -123,7 +146,35 @@ export default function TimeSeries({ accessToken }) {
           California COVID cases
         </p>
 
-        {!!options && <ReactECharts option={options} />}
+        {!options
+          ? <p>Loading...</p>
+          : (
+          <div className="chart-container">
+            <DateRangePicker
+              startText="Start date"
+              endText="End date"
+              value={timeRange}
+              onChange={(date) => setTimeRange(date)}
+              renderInput={(startProps, endProps) => (
+                <React.Fragment>
+                  <TextField {...startProps} />
+                  <Box sx={{ mx: 2 }}> to </Box>
+                  <TextField {...endProps} />
+                </React.Fragment>
+              )}
+            />
+            <ReactECharts option={options} />
+            <style jsx>{`
+              .chart-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                margin-top: 40px;
+              }
+            `}</style>
+          </div>
+        )}
       </Layout>
     </>
   )

@@ -119,7 +119,7 @@ export default function Counter({ accessToken }) {
           California COVID cases yesterday
         </p>
 
-        {!!options && <ReactECharts option={options} />}
+        {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
       </Layout>
     </>
   )
