@@ -74,6 +74,7 @@ const QUERY = gql`
 
 export default function TimeSeries({ accessToken }) {
   const [options, setOptions] = React.useState()
+  const [timeSeries, setTimeSeries] = React.useState()
   const [timeRange, setTimeRange] = React.useState([null, null])
 
   React.useEffect(() => {
@@ -87,6 +88,7 @@ export default function TimeSeries({ accessToken }) {
           id: 'MET01FV2JKFHCJTVNTXWGYFJ2Q8T8'
         })
 
+        setTimeSeries(metric.timeSeries)
         setOptions({
           ...timeSeriesBaseConfig,
           xAxis: {
@@ -114,13 +116,26 @@ export default function TimeSeries({ accessToken }) {
 
   React.useEffect(() => {
     if (timeRange[0] && timeRange[1]) {
+      const labelsByRange = timeSeries.labels.filter(label => label >= timeRange[0].toJSON() && label <= timeRange[1].toJSON())
+      const valuesByRange = timeSeries.labels.reduce((values, label, index) => {
+        if (label >= timeRange[0].toJSON() && label <= timeRange[1].toJSON()) {
+          return [...values, timeSeries.values[index]]
+        }
+        return values
+      }, [])
+
       setOptions({
         ...options,
         xAxis: {
           ...options.xAxis,
-          min: timeRange[0].toJSON(),
-          max: timeRange[1].toJSON()
-        }
+          data: labelsByRange
+        },
+        series: [
+          {
+            data: valuesByRange,
+            type: 'bar'
+          }
+        ]
       })
     }
   }, [timeRange])
@@ -155,6 +170,7 @@ export default function TimeSeries({ accessToken }) {
               endText="End date"
               value={timeRange}
               onChange={(date) => setTimeRange(date)}
+              disableCloseOnSelect={false}
               renderInput={(startProps, endProps) => (
                 <React.Fragment>
                   <TextField {...startProps} />
