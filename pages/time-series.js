@@ -11,7 +11,7 @@ import DateRangePicker from '@mui/lab/DateRangePicker'
 import Box from '@mui/material/Box'
 
 import { Layout } from '../components'
-import timeSeriesBaseConfig from '../utils/timeSeriesBaseConfig'
+import { buildTimeSeriesChartConfig } from '../utils'
 
 export async function getServerSideProps(context) {
   /**
@@ -52,11 +52,12 @@ export async function getServerSideProps(context) {
  * Set the query
  */
 const QUERY = gql`
-  query caseQuery ($id: ID!) {
+  query caseQuery ($id: ID!, $start: DateTime, $stop: DateTime) {
     metric (id: $id) {
       timeSeries (input: {
         timeRange: {
-          relative: LAST_YEAR
+          start: $start
+          stop: $stop
         }
         granularity: WEEK
       }) {
@@ -74,71 +75,40 @@ const QUERY = gql`
 
 export default function TimeSeries({ accessToken }) {
   const [options, setOptions] = React.useState()
-  const [timeSeries, setTimeSeries] = React.useState()
-  const [timeRange, setTimeRange] = React.useState([null, null])
+  const [timeRange, setTimeRange] = React.useState([
+    dayjs('2021-01-01'),
+    dayjs('2022-05-21')
+  ])
+
+  const startDate = timeRange[0].format('YYYY-MM-DD')
+  const stopDate = timeRange[1].format('YYYY-MM-DD')
 
   React.useEffect(() => {
-    async function fetchData () {
-      try {
-        client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(QUERY, {
-          /**
-           * Your Metric ID
-           */
-          id: 'MET01FV2JKFHCJTVNTXWGYFJ2Q8T8'
-        })
-
-        setTimeSeries(metric.timeSeries)
-        setOptions({
-          ...timeSeriesBaseConfig,
-          xAxis: {
-            data: metric.timeSeries.labels,
-            axisLabel: {
-              formatter: (function(value){
-                  return dayjs(value).format('MM/DD/YY');
-              })
-            }
-          },
-          series: [
-            {
-              data: metric.timeSeries.values,
-              type: 'bar'
-            }
-          ]
-        })
-      } catch (error) {}
-    }
-
     if (accessToken) {
-      fetchData()
+      client.setHeader('authorization', 'Bearer ' + accessToken)
     }
   }, [accessToken])
 
   React.useEffect(() => {
-    if (timeRange[0] && timeRange[1]) {
-      const labelsByRange = timeSeries.labels.filter(label => label >= timeRange[0].toJSON() && label <= timeRange[1].toJSON())
-      const valuesByRange = timeSeries.labels.reduce((values, label, index) => {
-        if (label >= timeRange[0].toJSON() && label <= timeRange[1].toJSON()) {
-          return [...values, timeSeries.values[index]]
-        }
-        return values
-      }, [])
+    async function fetchData () {
+      try {
+        const { metric } = await client.request(QUERY, {
+          /**
+           * Your Metric ID
+           */
+          id: 'MET01FV2JKFHCJTVNTXWGYFJ2Q8T8',
+          start: startDate,
+          stop: stopDate
+        })
 
-      setOptions({
-        ...options,
-        xAxis: {
-          ...options.xAxis,
-          data: labelsByRange
-        },
-        series: [
-          {
-            data: valuesByRange,
-            type: 'bar'
-          }
-        ]
-      })
+        setOptions(buildTimeSeriesChartConfig(metric.timeSeries))
+      } catch (error) {}
     }
-  }, [timeRange])
+
+    if (startDate && stopDate) {
+      fetchData()
+    }
+  }, [startDate, stopDate])
 
   return (
     <>
@@ -170,7 +140,7 @@ export default function TimeSeries({ accessToken }) {
               endText="End date"
               value={timeRange}
               onChange={(date) => setTimeRange(date)}
-              disableCloseOnSelect={false}
+              autoOk
               renderInput={(startProps, endProps) => (
                 <React.Fragment>
                   <TextField {...startProps} />

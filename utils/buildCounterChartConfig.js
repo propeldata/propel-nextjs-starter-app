@@ -1,4 +1,4 @@
-export default {
+const baseConfig = {
   type: 'gauge',
   startAngle: 180,
   endAngle: 0,
@@ -69,5 +69,18 @@ export default {
         padding: [0, 0, -20, 10]
       }
     }
+  }
+}
+
+export default function buildCounterChartConfig (counterValue) {
+  return {
+    series: [{
+      ...baseConfig,
+      data: [
+        {
+          value: counterValue
+        }
+      ]
+    }]
   }
 }

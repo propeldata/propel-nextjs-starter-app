@@ -2,12 +2,12 @@
 import React from 'react'
 import Link from 'next/link'
 import Head from 'next/head'
-import { GraphQLClient, request, gql } from 'graphql-request'
+import { GraphQLClient, gql } from 'graphql-request'
 import { ClientCredentials } from 'simple-oauth2'
 import ReactECharts from 'echarts-for-react'
 
 import { Layout } from '../components'
-import chartBaseConfig from '../utils/counterBaseConfig'
+import { buildCounterChartConfig } from '../utils'
 
 export async function getServerSideProps() {
   /**
@@ -80,16 +80,7 @@ export default function Counter({ accessToken }) {
           id: 'MET01FV2JKFHCJTVNTXWGYFJ2Q8T8'
         })
 
-        setOptions({
-          series: [{
-            ...chartBaseConfig,
-            data: [
-              {
-                value: metric.counter.value
-              }
-            ]
-          }]
-        })
+        setOptions(buildCounterChartConfig(metric.counter.value))
       } catch (error) {}
     }
 
