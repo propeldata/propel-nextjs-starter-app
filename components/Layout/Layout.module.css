@@ -1,0 +1,37 @@
+.container {
+  height: 100vh;
+
+  background: url('/background.svg');
+  background-position: bottom right;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 35%;
+}
+
+.appbar {
+  position: fixed;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: 100%;
+  height: var(--appbar-height);
+
+  padding: 0px var(--sides-padding);
+
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+.main {
+  justify-content: center;
+  text-align: center;
+  text-align: -webkit-center;
+  text-align: -moz-center;
+
+  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px var(--sides-padding);
+}
+
+.menu {
+  font-size: 14px;
+}

@@ -1,195 +1,98 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
+import { Layout } from '../components'
+
 export default function Home() {
   return (
-    <div className="container">
+    <>
       <Head>
         <title>Propel Sample App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main>
-        <h1 className="title">
+      <Layout
+        appLink={(
+          <Link href="#">
+            Docs
+          </Link>
+        )}
+      >
+        <h1>
           Welcome to <a href="https://www.propeldata.com">Propel!</a>
         </h1>
 
-        <p className="description">
+        <p>
           How developers build data products.
         </p>
 
         <div className="grid">
-        <Link href="/timeSeries">
-          <a href="/timeSeries" className="card">
-            <h3>Time Series &rarr;</h3>
-            <p>Build your first Time Series chart from your Metrics!</p>
-          </a>
+          <Link href="/time-series">
+            <div className="card">
+              <h3>Time Series &rarr;</h3>
+              <p>Build your first Time Series chart from your Metrics!</p>
+            </div>
           </Link>
           <Link href="/counter">
-          <a href="/counter" className="card">
-            <h3>Counter &rarr;</h3>
-            <p>Build your first metric counter visualization!</p>
-          </a>
+            <div className="card">
+              <h3>Counter &rarr;</h3>
+              <p>Build your first metric counter visualization!</p>
+            </div>
           </Link>
         </div>
-      </main>
 
-      <footer>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel" className="logo" />
-        </a>
-      </footer>
-
-      <style jsx>{`
-        .container {
-          min-height: 100vh;
-          padding: 0 0.5rem;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        main {
-          padding: 5rem 0;
-          flex: 1;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer {
-          width: 100%;
-          height: 100px;
-          border-top: 1px solid #eaeaea;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        footer img {
-          margin-left: 0.5rem;
-        }
-
-        footer a {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-        a {
-          color: inherit;
-          text-decoration: none;
-        }
-
-        .title a {
-          color: #0070f3;
-          text-decoration: none;
-        }
-
-        .title a:hover,
-        .title a:focus,
-        .title a:active {
-          text-decoration: underline;
-        }
-
-        .title {
-          margin: 0;
-          line-height: 1.15;
-          font-size: 4rem;
-        }
-
-        .title,
-        .description {
-          text-align: center;
-        }
-
-        .description {
-          line-height: 1.5;
-          font-size: 1.5rem;
-        }
-
-        code {
-          background: #fafafa;
-          border-radius: 5px;
-          padding: 0.75rem;
-          font-size: 1.1rem;
-          font-family: Menlo, Monaco, Lucida Console, Liberation Mono,
-            DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace;
-        }
-
-        .grid {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-wrap: wrap;
-
-          max-width: 800px;
-          margin-top: 3rem;
-        }
-
-        .card {
-          margin: 1rem;
-          flex-basis: 45%;
-          padding: 1.5rem;
-          text-align: left;
-          color: inherit;
-          text-decoration: none;
-          border: 1px solid #eaeaea;
-          border-radius: 10px;
-          transition: color 0.15s ease, border-color 0.15s ease;
-        }
-
-        .card:hover,
-        .card:focus,
-        .card:active {
-          color: #0070f3;
-          border-color: #0070f3;
-        }
-
-        .card h3 {
-          margin: 0 0 1rem 0;
-          font-size: 1.5rem;
-        }
-
-        .card p {
-          margin: 0;
-          font-size: 1.00rem;
-          line-height: 1.5;
-        }
-
-        .logo {
-          height: 1em;
-        }
-
-        @media (max-width: 600px) {
+        <style jsx>{`
           .grid {
-            width: 100%;
-            flex-direction: column;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+  
+            max-width: 800px;
+            margin-top: 3rem;
           }
-        }
-      `}</style>
+          .card {
+            padding: 1.5rem;
+            margin: 1rem;
+            flex-basis: 45%;
 
-      <style jsx global>{`
-        html,
-        body {
-          padding: 0;
-          margin: 0;
-          font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto,
-            Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
-            sans-serif;
-        }
+            text-align: left;
+            text-decoration: none;
+            color: inherit;
 
-        * {
-          box-sizing: border-box;
-        }
-      `}</style>
-    </div>
+            border-radius: 4px;
+            box-shadow: 0px 27px 123px rgba(6, 18, 154, 0.04), 0px 8.1px 37px rgba(6, 18, 154, 0.02),
+    0px 3.3px 15.4px rgba(6, 18, 154, 0.02), 0px 1.2px 5.5px rgba(6, 18, 154, 0.01);
+
+            transition: color 0.15s ease, border-color 0.15s ease;
+            cursor: pointer;
+          }
+          .card:hover,
+          .card:focus,
+          .card:active {
+            color: var(--color-primary);
+            border-color: var(--color-primary);
+          }
+
+          .card h3 {
+            margin: 0 0 1rem 0;
+            font-size: 1.5rem;
+          }
+
+          .card p {
+            margin: 0;
+            font-size: 1.00rem;
+            line-height: 1.5;
+          }
+
+          @media (max-width: 600px) {
+            .grid {
+              width: 100%;
+              flex-direction: column;
+            }
+          }
+        `}</style>
+      </Layout>
+    </>
   )
 }
