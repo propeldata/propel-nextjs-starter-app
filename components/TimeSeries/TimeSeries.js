@@ -10,32 +10,12 @@ import Box from '@mui/material/Box'
 
 import { Layout } from '..'
 import { buildTimeSeriesChartConfig } from '../../utils'
-
-/**
- * Set the query
- */
-const QUERY = gql`
-  query caseQuery ($id: ID!, $start: DateTime, $stop: DateTime) {
-    metric (id: $id) {
-      timeSeries (input: {
-        timeRange: {
-          start: $start
-          stop: $stop
-        }
-        granularity: WEEK
-      }) {
-        labels
-        values
-      }
-    }
-  }
-`
+import CaseQuery from './CaseQuery.graphql'
 
 /**
  * Create a graphql client
  */
  const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
-
 
 export default function TimeSeries({ accessToken, metricId, setCurrentPage }) {
   const [options, setOptions] = React.useState()
@@ -56,7 +36,7 @@ export default function TimeSeries({ accessToken, metricId, setCurrentPage }) {
   React.useEffect(() => {
     async function fetchData () {
       try {
-        const { metric } = await client.request(QUERY, {
+        const { metric } = await client.request(CaseQuery, {
           /**
            * Your Metric ID
            */

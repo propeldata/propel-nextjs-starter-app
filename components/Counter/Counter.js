@@ -5,20 +5,7 @@ import ReactECharts from 'echarts-for-react'
 
 import { Layout } from '..'
 import { buildCounterChartConfig } from '../../utils'
-
-const QUERY = gql`
-  query caseQueryCounter ($id: ID!) {
-    metric (id: $id) {
-      counter (input: {
-        timeRange: {
-          relative: PREVIOUS_WEEK
-        }
-      }) {
-        value
-      }
-    }
-  }
-`
+import CaseQueryCounter from './CaseQueryCounter.graphql'
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
@@ -29,14 +16,12 @@ export default function Counter({ accessToken, metricId, setCurrentPage }) {
     async function fetchData () {
       try {
         client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(QUERY, {
+        const { metric } = await client.request(CaseQueryCounter, {
           /**
            * Your Metric ID
            */
           id: metricId
         })
-
-        console.log(metric)
 
         setOptions(buildCounterChartConfig(metric.counter.value))
       } catch (error) {}
