@@ -1,0 +1,11 @@
+  query caseQueryCounter ($id: ID!) {
+    metric (id: $id) {
+      counter (input: {
+        timeRange: {
+          relative: PREVIOUS_WEEK
+        }
+      }) {
+        value
+      }
+    }
+  }
