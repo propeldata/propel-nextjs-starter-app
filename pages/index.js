@@ -9,6 +9,8 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select'
 
 import { Layout, Counter, Card, TimeSeries } from '../components'
+import { MetricsQuery } from '../graphql'
+import router from 'next/router'
 
 export async function getServerSideProps() {
   /**
@@ -45,43 +47,40 @@ export async function getServerSideProps() {
   }
 }
 
-const metricsQuery = gql`
-  query Metrics {
-    metrics {
-      nodes {
-        id
-        uniqueName
-      }
-    }
-  }
-`
-
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
 export default function App({ accessToken }) {
-  const [currentPage, setCurrentPage] = React.useState('home')
   const [metrics, setMetrics] = React.useState()
   const [selectedMetric, setSelectedMetric] = React.useState('')
+
+  React.useEffect(() => {
+    if (accessToken) {
+      window.localStorage.setItem('accessToken', accessToken)
+    }
+  }, [accessToken])
 
   React.useEffect(() => {
     async function fetchData () {
       try {
         client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metrics } = await client.request(metricsQuery)
+        const { metrics } = await client.request(MetricsQuery)
 
         setMetrics(metrics)
       } catch (error) {}
     }
 
-    fetchData()
-  }, [])
+    if (accessToken) {
+      fetchData()
+    }
+
+  }, [accessToken])
 
   const handleChange = (event) => {
     setSelectedMetric(event.target.value)
   }
 
   const handleCardClick = (pageRef) => {
-    setCurrentPage(pageRef)
+    router.push(`/${pageRef}/${selectedMetric}`)
   }
 
   return (
@@ -90,101 +89,88 @@ export default function App({ accessToken }) {
         <title>Propel Sample App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      {currentPage === 'home' ? 
-        <Layout
-          appLink={(
-            <Link href="#">
-              Docs
-            </Link>
+      <Layout
+        appLink={
+          <Link href="#">
+            Docs
+          </Link>
+        }
+      >
+        <h1>
+          Welcome to <a href="https://www.propeldata.com">Propel!</a>
+        </h1>
+        <p>
+          How developers build data products.
+        </p>
+        <div className="select-container">
+          {!metrics ? 'Loading...' : (
+            <FormControl fullWidth sx={{ textAlign: 'left' }}>
+              <InputLabel id="select-metric-label">Select a Metric</InputLabel>
+              <Select
+                labelId="select-metric-label"
+                label="Select a Metric"
+                id="demo-simple-select"
+                value={selectedMetric}
+                onChange={handleChange}
+              >
+                {metrics.nodes.map(metric => (
+                  <MenuItem
+                    key={metric.id}
+                    value={metric.id}
+                  >
+                    {metric.uniqueName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           )}
-        >
-          <h1>
-            Welcome to <a href="https://www.propeldata.com">Propel!</a>
-          </h1>
-          <p>
-            How developers build data products.
-          </p>
-          <div className="select-container">
-            {!metrics ? 'Loading...' : (
-              <FormControl fullWidth sx={{ textAlign: 'left' }}>
-                <InputLabel id="select-metric-label">Select a Metric</InputLabel>
-                <Select
-                  labelId="select-metric-label"
-                  label="Select a Metric"
-                  id="demo-simple-select"
-                  value={selectedMetric}
-                  onChange={handleChange}
-                >
-                  {metrics.nodes.map(metric => (
-                    <MenuItem
-                      key={metric.id}
-                      value={metric.id}
-                    >
-                      {metric.uniqueName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          </div>
+        </div>
 
-          <div className="grid">
-            <Card
-              title="Time Series"
-              description="Build your first Time Series chart from your Metrics!"
-              pageRef="time-series"
-              onClick={handleCardClick}
-              disabled={!selectedMetric}
-            />
-            <Card 
-              title="Counter"
-              description="Build your first Metric Counter visualization!"
-              pageRef="counter"
-              onClick={handleCardClick}
-              disabled={!selectedMetric}
-            />
-          </div>
+        <div className="grid">
+          <Card
+            title="Time Series"
+            description="Build your first Time Series chart from your Metrics!"
+            pageRef="time-series"
+            onClick={handleCardClick}
+            disabled={!selectedMetric}
+          />
+          <Card 
+            title="Counter"
+            description="Build your first Metric Counter visualization!"
+            pageRef="counter"
+            onClick={handleCardClick}
+            disabled={!selectedMetric}
+          />
+        </div>
 
-          <style jsx>{`
+        <style jsx>{`
+          .grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+          
+            max-width: 800px;
+            margin-top: 2rem;
+          }
+
+          .select-container{
+            margin-top: 2rem;
+            max-width: 300px;
+            height: 58.86px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+
+          @media (max-width: 600px) {
             .grid {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              flex-wrap: wrap;
-            
-              max-width: 800px;
-              margin-top: 2rem;
+              width: 100%;
+              flex-direction: column;
             }
-
-            .select-container{
-              margin-top: 2rem;
-              max-width: 300px;
-              height: 58.86px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-            }
-
-            @media (max-width: 600px) {
-              .grid {
-                width: 100%;
-                flex-direction: column;
-              }
-            }
-          `}</style>
-        </Layout> :
-        currentPage === 'counter' ? 
-        <Counter 
-          metricId={selectedMetric} 
-          accessToken={accessToken} 
-          setCurrentPage={setCurrentPage} 
-        /> :
-        <TimeSeries
-          metricId={selectedMetric}
-          accessToken={accessToken}
-          setCurrentPage={setCurrentPage}
-        />
-      }
+          }
+        `}</style>
+      </Layout>
     </>
   )
 }

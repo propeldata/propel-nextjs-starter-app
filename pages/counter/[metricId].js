@@ -1,20 +1,26 @@
 
 import React from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import { GraphQLClient, gql } from 'graphql-request'
 import ReactECharts from 'echarts-for-react'
 
-import { Layout } from '..'
+import { Layout } from '../../components'
 import { buildCounterChartConfig } from '../../utils'
-import CaseQueryCounter from './CaseQueryCounter.graphql'
+import { CaseQueryCounter } from '../../graphql'
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
-export default function Counter({ accessToken, metricId, setCurrentPage }) {
+export default function Counter() {
   const [options, setOptions] = React.useState()
+
+  const router = useRouter()
+  const { metricId } = router.query
 
   React.useEffect(() => {
     async function fetchData () {
       try {
+        const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
         const { metric } = await client.request(CaseQueryCounter, {
           /**
@@ -27,33 +33,26 @@ export default function Counter({ accessToken, metricId, setCurrentPage }) {
       } catch (error) {}
     }
 
-    if (accessToken) {
+    if (metricId) {
       fetchData()
     }
-  }, [accessToken])
-
-  const handleReturnHome = () => {
-    setCurrentPage('home')
-  }
+  }, [metricId])
 
   return (
-    <>
-      <Layout
-        appLink={(
-          <div className="link" onClick={handleReturnHome}>
-            &larr; back to home
-          </div>
-        )}
-      >
-        <h1>
-            Metric Counter
-          </h1>
-
-          <p>
-            California COVID cases yesterday
-          </p>
-
-          {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
+    <Layout
+      appLink={
+        <Link href="/">
+          &larr; back to home
+        </Link>
+      }
+    >
+      <h1>
+        Metric Counter
+      </h1>
+      <p>
+        California COVID cases yesterday
+      </p>
+      {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
       <style jsx>{`
         .link-container {
           margin-top: 20px;
@@ -64,7 +63,6 @@ export default function Counter({ accessToken, metricId, setCurrentPage }) {
           cursor: pointer;
         }
       `}</style>
-      </Layout>
-    </>
+    </Layout>
   )
 }

@@ -1,41 +1,42 @@
 
 import React from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 import Head from 'next/head'
-import { GraphQLClient, gql } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import ReactECharts from 'echarts-for-react'
 import dayjs from 'dayjs'
 import TextField from '@mui/material/TextField'
 import DateRangePicker from '@mui/lab/DateRangePicker'
 import Box from '@mui/material/Box'
 
-import { Layout } from '..'
+import { Layout } from '../../components'
 import { buildTimeSeriesChartConfig } from '../../utils'
-import CaseQuery from './CaseQuery.graphql'
+import { CaseQuery } from '../../graphql'
 
 /**
  * Create a graphql client
  */
- const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
+const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
-export default function TimeSeries({ accessToken, metricId, setCurrentPage }) {
+export default function TimeSeries() {
   const [options, setOptions] = React.useState()
   const [timeRange, setTimeRange] = React.useState([
     dayjs('2021-01-01'),
     dayjs('2022-05-21')
   ])
 
+  const router = useRouter()
+  const { metricId } = router.query
+
   const startDate = timeRange[0].format('YYYY-MM-DD')
   const stopDate = timeRange[1].format('YYYY-MM-DD')
 
   React.useEffect(() => {
-    if (accessToken) {
-      client.setHeader('authorization', 'Bearer ' + accessToken)
-    }
-  }, [accessToken])
-
-  React.useEffect(() => {
     async function fetchData () {
       try {
+        const accessToken = window.localStorage.getItem('accessToken')
+        client.setHeader('authorization', 'Bearer ' + accessToken)
         const { metric } = await client.request(CaseQuery, {
           /**
            * Your Metric ID
@@ -49,14 +50,11 @@ export default function TimeSeries({ accessToken, metricId, setCurrentPage }) {
       } catch (error) {}
     }
 
-    if (startDate && stopDate) {
+    if (startDate && stopDate && metricId) {
       fetchData()
     }
-  }, [startDate, stopDate])
+  }, [startDate, stopDate, metricId])
 
-  const handleReturnHome = () => {
-    setCurrentPage('home')
-  }
 
   return (
     <>
@@ -66,18 +64,9 @@ export default function TimeSeries({ accessToken, metricId, setCurrentPage }) {
       </Head>
       <Layout
         appLink={(
-          <>
-            <div className="link" onClick={handleReturnHome}>
-              &larr; back to home
-            </div>
-            <style jsx>{`  
-              .link {
-                color: var(--color-primary);
-                cursor: pointer;
-              }
-            `}</style>
-          </>
-          
+          <Link href="/">
+            &larr; back to home
+          </Link>
         )}
       >
         <h1>
