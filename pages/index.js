@@ -1,98 +1,190 @@
+import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { ClientCredentials } from 'simple-oauth2'
+import { GraphQLClient, gql } from 'graphql-request'
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select'
 
-import { Layout } from '../components'
+import { Layout, Counter, Card, TimeSeries } from '../components'
 
-export default function Home() {
+export async function getServerSideProps() {
+  /**
+   * Set the config for the OAuth2 client
+   */
+  const config = {
+    client: {
+      id: process.env.CLIENT_ID_SAMPLE_APP,
+      secret: process.env.CLIENT_SECRET_SAMPLE_APP
+    },
+    auth: {
+      tokenHost: process.env.TOKEN_HOST,
+      tokenPath: process.env.TOKEN_PATH
+    }
+  }
+
+  /**
+   * Create the OAuth2 client
+   */
+  const oauth2Client = new ClientCredentials(config)
+  const tokenParams = {
+      scope: '<scope>',
+  }
+
+  /**
+   * Get a token using the client credentials
+   */
+  const accessToken = await oauth2Client.getToken()
+
+  return {
+    props: {
+      accessToken: accessToken.token.access_token
+    }
+  }
+}
+
+const metricsQuery = gql`
+  query Metrics {
+    metrics {
+      nodes {
+        id
+        uniqueName
+      }
+    }
+  }
+`
+
+const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
+
+export default function App({ accessToken }) {
+  const [currentPage, setCurrentPage] = React.useState('home')
+  const [metrics, setMetrics] = React.useState()
+  const [selectedMetric, setSelectedMetric] = React.useState('')
+
+  React.useEffect(() => {
+    async function fetchData () {
+      try {
+        client.setHeader('authorization', 'Bearer ' + accessToken)
+        const { metrics } = await client.request(metricsQuery)
+
+        setMetrics(metrics)
+      } catch (error) {}
+    }
+
+    fetchData()
+  }, [])
+
+  const handleChange = (event) => {
+    setSelectedMetric(event.target.value)
+  }
+
+  const handleCardClick = (pageRef) => {
+    setCurrentPage(pageRef)
+  }
+
   return (
     <>
       <Head>
         <title>Propel Sample App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      {currentPage === 'home' ? 
+        <Layout
+          appLink={(
+            <Link href="#">
+              Docs
+            </Link>
+          )}
+        >
+          <h1>
+            Welcome to <a href="https://www.propeldata.com">Propel!</a>
+          </h1>
+          <p>
+            How developers build data products.
+          </p>
+          <div className="select-container">
+            {!metrics ? 'Loading...' : (
+              <FormControl fullWidth sx={{ textAlign: 'left' }}>
+                <InputLabel id="select-metric-label">Select a Metric</InputLabel>
+                <Select
+                  labelId="select-metric-label"
+                  label="Select a Metric"
+                  id="demo-simple-select"
+                  value={selectedMetric}
+                  onChange={handleChange}
+                >
+                  {metrics.nodes.map(metric => (
+                    <MenuItem
+                      key={metric.id}
+                      value={metric.id}
+                    >
+                      {metric.uniqueName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            )}
+          </div>
 
-      <Layout
-        appLink={(
-          <Link href="#">
-            Docs
-          </Link>
-        )}
-      >
-        <h1>
-          Welcome to <a href="https://www.propeldata.com">Propel!</a>
-        </h1>
+          <div className="grid">
+            <Card
+              title="Time Series"
+              description="Build your first Time Series chart from your Metrics!"
+              pageRef="time-series"
+              onClick={handleCardClick}
+              disabled={!selectedMetric}
+            />
+            <Card 
+              title="Counter"
+              description="Build your first Metric Counter visualization!"
+              pageRef="counter"
+              onClick={handleCardClick}
+              disabled={!selectedMetric}
+            />
+          </div>
 
-        <p>
-          How developers build data products.
-        </p>
-
-        <div className="grid">
-          <Link href="/time-series">
-            <div className="card">
-              <h3>Time Series &rarr;</h3>
-              <p>Build your first Time Series chart from your Metrics!</p>
-            </div>
-          </Link>
-          <Link href="/counter">
-            <div className="card">
-              <h3>Counter &rarr;</h3>
-              <p>Build your first metric counter visualization!</p>
-            </div>
-          </Link>
-        </div>
-
-        <style jsx>{`
-          .grid {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-wrap: wrap;
-  
-            max-width: 800px;
-            margin-top: 3rem;
-          }
-          .card {
-            padding: 1.5rem;
-            margin: 1rem;
-            flex-basis: 45%;
-
-            text-align: left;
-            text-decoration: none;
-            color: inherit;
-
-            border-radius: 4px;
-            box-shadow: 0px 27px 123px rgba(6, 18, 154, 0.04), 0px 8.1px 37px rgba(6, 18, 154, 0.02),
-    0px 3.3px 15.4px rgba(6, 18, 154, 0.02), 0px 1.2px 5.5px rgba(6, 18, 154, 0.01);
-
-            transition: color 0.15s ease, border-color 0.15s ease;
-            cursor: pointer;
-          }
-          .card:hover,
-          .card:focus,
-          .card:active {
-            color: var(--color-primary);
-            border-color: var(--color-primary);
-          }
-
-          .card h3 {
-            margin: 0 0 1rem 0;
-            font-size: 1.5rem;
-          }
-
-          .card p {
-            margin: 0;
-            font-size: 1.00rem;
-            line-height: 1.5;
-          }
-
-          @media (max-width: 600px) {
+          <style jsx>{`
             .grid {
-              width: 100%;
-              flex-direction: column;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              flex-wrap: wrap;
+            
+              max-width: 800px;
+              margin-top: 2rem;
             }
-          }
-        `}</style>
-      </Layout>
+
+            .select-container{
+              margin-top: 2rem;
+              max-width: 300px;
+              height: 58.86px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+
+            @media (max-width: 600px) {
+              .grid {
+                width: 100%;
+                flex-direction: column;
+              }
+            }
+          `}</style>
+        </Layout> :
+        currentPage === 'counter' ? 
+        <Counter 
+          metricId={selectedMetric} 
+          accessToken={accessToken} 
+          setCurrentPage={setCurrentPage} 
+        /> :
+        <TimeSeries
+          metricId={selectedMetric}
+          accessToken={accessToken}
+          setCurrentPage={setCurrentPage}
+        />
+      }
     </>
   )
 }
