@@ -1,0 +1,14 @@
+query caseQuery ($id: ID!, $start: DateTime, $stop: DateTime) {
+  metric (id: $id) {
+    timeSeries (input: {
+      timeRange: {
+        start: $start
+        stop: $stop
+      }
+      granularity: WEEK
+    }) {
+      labels
+      values
+    }
+  }
+}

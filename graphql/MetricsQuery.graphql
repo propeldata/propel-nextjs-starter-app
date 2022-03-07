@@ -1,0 +1,8 @@
+query Metrics {
+  metrics {
+    nodes {
+      id
+      uniqueName
+    }
+  }
+}
