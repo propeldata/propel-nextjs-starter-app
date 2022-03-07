@@ -1,4 +1,5 @@
 import React from 'react'
+import router from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ClientCredentials } from 'simple-oauth2'
@@ -10,7 +11,6 @@ import Select from '@mui/material/Select'
 
 import { Layout, Counter, Card, TimeSeries } from '../components'
 import { MetricsQuery } from '../graphql'
-import router from 'next/router'
 
 export async function getServerSideProps() {
   /**

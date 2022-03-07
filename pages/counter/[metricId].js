@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -23,9 +22,6 @@ export default function Counter() {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
         const { metric } = await client.request(CaseQueryCounter, {
-          /**
-           * Your Metric ID
-           */
           id: metricId
         })
 

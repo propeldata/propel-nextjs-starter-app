@@ -38,9 +38,6 @@ export default function TimeSeries() {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
         const { metric } = await client.request(CaseQuery, {
-          /**
-           * Your Metric ID
-           */
           id: metricId,
           start: startDate,
           stop: stopDate
