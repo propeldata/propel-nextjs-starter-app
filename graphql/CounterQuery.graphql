@@ -1,4 +1,4 @@
-  query caseQueryCounter ($id: ID!) {
+  query counterQuery ($id: ID!) {
     metric (id: $id) {
       counter (input: {
         timeRange: {
