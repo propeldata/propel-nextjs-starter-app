@@ -6,7 +6,7 @@ import ReactECharts from 'echarts-for-react'
 
 import { Layout } from '../../components'
 import { buildCounterChartConfig } from '../../utils'
-import { CaseQueryCounter } from '../../graphql'
+import { CounterQuery } from '../../graphql'
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
@@ -23,7 +23,7 @@ export default function Counter() {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(CaseQueryCounter, {
+        const { metric } = await client.request(CounterQuery, {
           id: metricId
         })
 

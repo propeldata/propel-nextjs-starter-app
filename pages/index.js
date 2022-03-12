@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select'
 
-import { Layout, Counter, Card, TimeSeries } from '../components'
+import { Layout, Card } from '../components'
 import { MetricsQuery } from '../graphql'
 
 export async function getServerSideProps() {

@@ -12,7 +12,7 @@ import Box from '@mui/material/Box'
 
 import { Layout } from '../../components'
 import { buildTimeSeriesChartConfig } from '../../utils'
-import { CaseQuery } from '../../graphql'
+import { TimeSeriesQuery } from '../../graphql'
 
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
@@ -36,7 +36,7 @@ export default function TimeSeries() {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(CaseQuery, {
+        const { metric } = await client.request(TimeSeriesQuery, {
           id: metricId,
           start: startDate,
           stop: stopDate
