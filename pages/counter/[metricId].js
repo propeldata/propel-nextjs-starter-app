@@ -11,6 +11,8 @@ import { CaseQueryCounter } from '../../graphql'
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
 export default function Counter() {
+  const [title, setTitle] = React.useState()
+  const [description, setDescription] = React.useState()
   const [options, setOptions] = React.useState()
 
   const router = useRouter()
@@ -25,6 +27,8 @@ export default function Counter() {
           id: metricId
         })
 
+        setTitle(metric.uniqueName)
+        setDescription(metric.description)
         setOptions(buildCounterChartConfig(metric.counter.value))
       } catch (error) {}
     }
@@ -43,10 +47,10 @@ export default function Counter() {
       }
     >
       <h1>
-        Metric Counter
+        {title}
       </h1>
       <p>
-        California COVID cases yesterday
+        {description}
       </p>
       {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
       <style jsx>{`

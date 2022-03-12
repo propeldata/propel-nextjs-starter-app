@@ -14,12 +14,11 @@ import { Layout } from '../../components'
 import { buildTimeSeriesChartConfig } from '../../utils'
 import { CaseQuery } from '../../graphql'
 
-/**
- * Create a graphql client
- */
 const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
 
 export default function TimeSeries() {
+  const [title, setTitle] = React.useState('')
+  const [description, setDescription] = React.useState('')
   const [options, setOptions] = React.useState()
   const [timeRange, setTimeRange] = React.useState([
     dayjs('2021-01-01'),
@@ -43,6 +42,8 @@ export default function TimeSeries() {
           stop: stopDate
         })
 
+        setTitle(metric.uniqueName)
+        setDescription(metric.description)
         setOptions(buildTimeSeriesChartConfig(metric.timeSeries))
       } catch (error) {}
     }
@@ -67,11 +68,11 @@ export default function TimeSeries() {
         )}
       >
         <h1>
-          Metric Time Series
+          {title}
         </h1>
 
         <p>
-          California COVID cases
+          {description}
         </p>
 
         {!options
