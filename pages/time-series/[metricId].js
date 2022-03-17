@@ -3,14 +3,11 @@ import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Head from 'next/head'
+import { format } from 'date-fns'
 import { GraphQLClient } from 'graphql-request'
 import ReactECharts from 'echarts-for-react'
-import dayjs from 'dayjs'
-import TextField from '@mui/material/TextField'
-import DateRangePicker from '@mui/lab/DateRangePicker'
-import Box from '@mui/material/Box'
 
-import { Layout } from '../../components'
+import { Layout, DateRangePicker } from '../../components'
 import { buildTimeSeriesChartConfig } from '../../utils'
 import { TimeSeriesQuery } from '../../graphql'
 
@@ -20,27 +17,22 @@ export default function TimeSeries() {
   const [title, setTitle] = React.useState('')
   const [description, setDescription] = React.useState('')
   const [options, setOptions] = React.useState()
-  const [timeRange, setTimeRange] = React.useState([
-    dayjs('2021-01-01'),
-    dayjs('2022-05-21')
-  ])
-
+  const [startDate, setStartDate] = React.useState(new Date('2021-01-01T10:00:00Z'))
+  const [stopDate, setStopDate] = React.useState(new Date('2022-05-21T10:00:00Z'))
+  
   const router = useRouter()
   const { metricId } = router.query
-
-  const startDate = timeRange[0].format('YYYY-MM-DD')
-  const stopDate = timeRange[1].format('YYYY-MM-DD')
 
   React.useEffect(() => {
     async function fetchData () {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(TimeSeriesQuery, {
-          id: metricId,
-          start: startDate,
-          stop: stopDate
-        })
+
+        const start = format(startDate, 'yyyy-MM-dd')
+        const stop = format(stopDate, 'yyyy-MM-dd')
+
+        const { metric } = await client.request(TimeSeriesQuery, { id: metricId, start, stop })
 
         setTitle(metric.uniqueName)
         setDescription(metric.description)
@@ -80,18 +72,10 @@ export default function TimeSeries() {
           : (
           <div className="chart-container">
             <DateRangePicker
-              startText="Start date"
-              endText="End date"
-              value={timeRange}
-              onChange={(date) => setTimeRange(date)}
-              autoOk
-              renderInput={(startProps, endProps) => (
-                <React.Fragment>
-                  <TextField {...startProps} />
-                  <Box sx={{ mx: 2 }}> to </Box>
-                  <TextField {...endProps} />
-                </React.Fragment>
-              )}
+              startDate={startDate}
+              stopDate={stopDate}
+              setStartDate={setStartDate}
+              setStopDate={setStopDate}
             />
             <ReactECharts option={options} />
             <style jsx>{`
