@@ -1,4 +1,4 @@
-import dayjs from 'dayjs'
+import { format } from 'date-fns'
 
 const baseConfig = {
   yAxis: {
@@ -22,7 +22,7 @@ export default function buildTimeSeriesChartConfig (timeSeries) {
       data: timeSeries.labels,
       axisLabel: {
         formatter: (function(value){
-            return dayjs(value).format('MM/DD/YY');
+          return format(new Date(value), 'MM/dd/yyyy');
         })
       }
     },
