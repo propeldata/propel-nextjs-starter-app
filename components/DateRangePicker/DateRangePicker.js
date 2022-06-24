@@ -1,16 +1,11 @@
-import React from 'react'
-import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
-import DateFnsUtils from '@date-io/date-fns'
+import React from "react"
+import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers"
+import DateFnsUtils from "@date-io/date-fns"
 
-import styles from './DateRangePicker.module.css'
+import styles from "./DateRangePicker.module.css"
 
-export default function DateRangePicker (props) {
-  const {
-    startDate,
-    stopDate,
-    setStartDate,
-    setStopDate
-  } = props
+export default function DateRangePicker(props) {
+  const { startDate, stopDate, setStartDate, setStopDate } = props
 
   const handleStartDateChange = (date) => {
     setStartDate(date)

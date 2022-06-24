@@ -1,12 +1,8 @@
-query counterQuery ($id: ID!) {
-  metric (id: $id) {
-    uniqueName,
-    description,
-    counter (input: {
-      timeRange: {
-        relative: PREVIOUS_WEEK
-      }
-    }) {
+query counterQuery($id: ID!) {
+  metric(id: $id) {
+    uniqueName
+    description
+    counter(input: { timeRange: { relative: PREVIOUS_WEEK } }) {
       value
     }
   }

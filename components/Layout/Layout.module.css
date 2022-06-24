@@ -1,7 +1,7 @@
 .container {
   height: 100vh;
 
-  background: url('/background.svg');
+  background: url("/background.svg");
   background-position: bottom right;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -29,7 +29,8 @@
   text-align: -webkit-center;
   text-align: -moz-center;
 
-  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px var(--sides-padding);
+  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px
+    var(--sides-padding);
 }
 
 .menu {
