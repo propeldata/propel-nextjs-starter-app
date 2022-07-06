@@ -46,7 +46,9 @@ export default function TimeSeries() {
         setTitle(metric.uniqueName)
         setDescription(metric.description)
         setOptions(buildTimeSeriesChartConfig(metric.timeSeries))
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     if (startDate && stopDate && metricId) {
@@ -68,24 +70,30 @@ export default function TimeSeries() {
         {!options ? (
           <p>Loading...</p>
         ) : (
-          <div className="chart-container">
-            <DateRangePicker
-              startDate={startDate}
-              stopDate={stopDate}
-              setStartDate={setStartDate}
-              setStopDate={setStopDate}
-            />
+          <>
+            <div className="flex flex-col items-center">
+              <DateRangePicker
+                startDate={startDate}
+                stopDate={stopDate}
+                setStartDate={setStartDate}
+                setStopDate={setStopDate}
+              />
+            </div>
             <ReactECharts option={options} />
             <style jsx>{`
-              .chart-container {
+              .flex {
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+              }
 
-                margin-top: 40px;
+              .flex-col {
+                flex-direction: column;
+              }
+
+              .items-center {
+                align-items: center;
               }
             `}</style>
-          </div>
+          </>
         )}
       </Layout>
     </>
