@@ -6,7 +6,21 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint --fix .",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix"
+    ],
+    "**/*.md": [
+      "prettier --write"
+    ],
+    "**/*.json": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@date-io/date-fns": "^2.14.0",
@@ -31,6 +45,8 @@
   "devDependencies": {
     "eslint": "^8.19.0",
     "eslint-config-next": "^12.2.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.7.1"
   }
 }
