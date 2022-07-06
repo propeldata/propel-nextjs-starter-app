@@ -113,3 +113,6 @@ dist
 
 # VS Code
 .DS_Store
+
+# Git log
+git-log.txt

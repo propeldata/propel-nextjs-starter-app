@@ -8,7 +8,8 @@
     "start": "next start",
     "format": "prettier --write .",
     "lint": "eslint --fix .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gitlog": "git log origin..HEAD --reverse --format=\"✅ %s %N%n\" > git-log.txt && code git-log.txt"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
