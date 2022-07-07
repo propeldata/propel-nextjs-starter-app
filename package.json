@@ -8,6 +8,7 @@
     "start": "next start",
     "format": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint --fix .",
+    "formatlint": "yarn run format && yarn run lint",
     "prepare": "husky install",
     "gitlog": "git log origin..HEAD --reverse --format=\"✅ %s%n%b %N%n\" > git-log.txt && code git-log.txt"
   },
