@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "format": "prettier --write .",
+    "format": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint --fix .",
     "prepare": "husky install",
     "gitlog": "git log origin..HEAD --reverse --format=\"✅ %s%n%b %N%n\" > git-log.txt && code git-log.txt"
