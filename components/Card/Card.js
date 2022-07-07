@@ -1,4 +1,4 @@
-export default function Card(props) {
+export default function Card (props) {
   const { disabled, title, description, pageRef, onClick } = props
 
   const handleClick = () => {

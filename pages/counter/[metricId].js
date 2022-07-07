@@ -12,7 +12,7 @@ const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
 )
 
-export default function Counter() {
+export default function Counter () {
   const [title, setTitle] = React.useState()
   const [description, setDescription] = React.useState()
   const [options, setOptions] = React.useState()
@@ -21,7 +21,7 @@ export default function Counter() {
   const { metricId } = router.query
 
   React.useEffect(() => {
-    async function fetchData() {
+    async function fetchData () {
       try {
         const accessToken = window.localStorage.getItem("accessToken")
         client.setHeader("authorization", "Bearer " + accessToken)

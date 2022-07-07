@@ -72,7 +72,7 @@ const baseConfig = {
   },
 }
 
-export default function buildCounterChartConfig(counterValue) {
+export default function buildCounterChartConfig (counterValue) {
   return {
     series: [
       {

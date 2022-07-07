@@ -12,7 +12,7 @@ import Select from "@mui/material/Select"
 import { Layout, Card } from "../components"
 import { MetricsQuery } from "../graphql"
 
-export async function getServerSideProps() {
+export async function getServerSideProps () {
   /**
    * Set the config for the OAuth2 client
    */
@@ -51,7 +51,7 @@ const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
 )
 
-export default function App({ accessToken }) {
+export default function App ({ accessToken }) {
   const [metrics, setMetrics] = React.useState()
   const [selectedMetric, setSelectedMetric] = React.useState("")
 
@@ -62,7 +62,7 @@ export default function App({ accessToken }) {
   }, [accessToken])
 
   React.useEffect(() => {
-    async function fetchData() {
+    async function fetchData () {
       try {
         client.setHeader("authorization", "Bearer " + accessToken)
         const { metrics } = await client.request(MetricsQuery)
