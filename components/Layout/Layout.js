@@ -1,8 +1,8 @@
-import React from "react"
-import Image from "next/image"
-import Link from "next/link"
+import React from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-import styles from "./Layout.module.css"
+import styles from './Layout.module.css'
 
 const Layout = ({ children, appLink }) => (
   <div className={styles.container}>

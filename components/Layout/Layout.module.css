@@ -1,7 +1,7 @@
 .container {
   height: 100vh;
 
-  background: url("/background.svg");
+  background: url('/background.svg');
   background-position: bottom right;
   background-repeat: no-repeat;
   background-attachment: fixed;

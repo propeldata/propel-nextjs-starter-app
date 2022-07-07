@@ -9,7 +9,7 @@ export default function Card (props) {
 
   return (
     <>
-      <div onClick={handleClick} className={`card ${disabled && "disabled"}`}>
+      <div onClick={handleClick} className={`card ${disabled && 'disabled'}`}>
         <h3>{title} &rarr;</h3>
         <p>{description}</p>
       </div>
