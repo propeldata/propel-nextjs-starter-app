@@ -8,14 +8,14 @@
     "start": "next start",
     "format": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint --fix .",
-    "formatlint": "yarn run format && yarn run lint",
+    "precommit": "yarn run lint && yarn run format",
     "prepare": "husky install",
     "gitlog": "git log origin..HEAD --reverse --format=\"✅ %s%n%b %N%n\" > git-log.txt && code git-log.txt"
   },
   "lint-staged": {
     "**/*.{js,jsx,ts,tsx}": [
-      "prettier --write",
-      "eslint --fix"
+      "eslint --fix",
+      "prettier --write"
     ],
     "**/*.css": [
       "prettier --write"
