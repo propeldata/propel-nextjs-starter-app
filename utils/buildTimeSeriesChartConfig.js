@@ -15,7 +15,7 @@ const baseConfig = {
   }
 }
 
-export default function buildTimeSeriesChartConfig (timeSeries) {
+export default function buildTimeSeriesChartConfig(timeSeries) {
   return {
     ...baseConfig,
     xAxis: {
