@@ -72,15 +72,17 @@ const baseConfig = {
   }
 }
 
-export default function buildCounterChartConfig (counterValue) {
+export default function buildCounterChartConfig(counterValue) {
   return {
-    series: [{
-      ...baseConfig,
-      data: [
-        {
-          value: counterValue
-        }
-      ]
-    }]
+    series: [
+      {
+        ...baseConfig,
+        data: [
+          {
+            value: counterValue
+          }
+        ]
+      }
+    ]
   }
 }

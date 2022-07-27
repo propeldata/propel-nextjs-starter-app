@@ -1,39 +1,39 @@
 :root {
-	--color-primary: #1b91ff;
-	--sides-padding: 30px;
-	--appbar-height: 60px;
+  --color-primary: #1b91ff;
+  --sides-padding: 30px;
+  --appbar-height: 60px;
 }
 
 html,
 body {
-	font-family: Roboto, Helvetica, Arial, sans-serif;
-	line-height: 1.6;
-	font-size: 18px;
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  font-size: 18px;
 }
 
 * {
-	padding: 0;
-	margin: 0;
-	box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
 a {
-	color: var(--color-primary);
-	text-decoration: none;
+  color: var(--color-primary);
+  text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 img {
-	max-width: 100%;
-	display: block;
+  max-width: 100%;
+  display: block;
 }
 
 @media (max-width: 600px) {
-	html,
-	body {
-		font-size: 16px;
-	}
+  html,
+  body {
+    font-size: 16px;
+  }
 }

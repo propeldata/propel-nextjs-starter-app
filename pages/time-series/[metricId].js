@@ -1,4 +1,3 @@
-
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
@@ -11,33 +10,45 @@ import { Layout, DateRangePicker } from '../../components'
 import { buildTimeSeriesChartConfig } from '../../utils'
 import { TimeSeriesQuery } from '../../graphql'
 
-const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
+const client = new GraphQLClient(
+  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
+)
 
 export default function TimeSeries() {
   const [title, setTitle] = React.useState('')
   const [description, setDescription] = React.useState('')
   const [options, setOptions] = React.useState()
-  const [startDate, setStartDate] = React.useState(new Date('2021-01-01T10:00:00Z'))
-  const [stopDate, setStopDate] = React.useState(new Date('2022-05-21T10:00:00Z'))
-  
+  const [startDate, setStartDate] = React.useState(
+    new Date('2021-01-01T10:00:00Z')
+  )
+  const [stopDate, setStopDate] = React.useState(
+    new Date('2022-05-21T10:00:00Z')
+  )
+
   const router = useRouter()
   const { metricId } = router.query
 
   React.useEffect(() => {
-    async function fetchData () {
+    async function fetchData() {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
 
         const start = format(startDate, 'yyyy-MM-dd')
-        const stop = format(stopDate, 'yyyy-MM-dd')
+        const stop = format(stopDate, 'yyyy-MM-dd')
 
-        const { metric } = await client.request(TimeSeriesQuery, { id: metricId, start, stop })
+        const { metric } = await client.request(TimeSeriesQuery, {
+          id: metricId,
+          start,
+          stop
+        })
 
         setTitle(metric.uniqueName)
         setDescription(metric.description)
         setOptions(buildTimeSeriesChartConfig(metric.timeSeries))
-      } catch (error) {}
+      } catch (error) {
+        console.log(error)
+      }
     }
 
     if (startDate && stopDate && metricId) {
@@ -45,49 +56,44 @@ export default function TimeSeries() {
     }
   }, [startDate, stopDate, metricId])
 
-
   return (
     <>
       <Head>
         <title>Propel Sample Time Series</title>
-        <link rel='icon' href="/favicon.ico" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout
-        appLink={(
-          <Link href="/">
-            &larr; back to home
-          </Link>
-        )}
-      >
-        <h1>
-          {title}
-        </h1>
+      <Layout appLink={<Link href="/">&larr; back to home</Link>}>
+        <h1>{title}</h1>
 
-        <p>
-          {description}
-        </p>
+        <p>{description}</p>
 
-        {!options
-          ? <p>Loading...</p>
-          : (
-          <div className="chart-container">
-            <DateRangePicker
-              startDate={startDate}
-              stopDate={stopDate}
-              setStartDate={setStartDate}
-              setStopDate={setStopDate}
-            />
+        {!options ? (
+          <p>Loading...</p>
+        ) : (
+          <>
+            <div className="flex flex-col items-center">
+              <DateRangePicker
+                startDate={startDate}
+                stopDate={stopDate}
+                setStartDate={setStartDate}
+                setStopDate={setStopDate}
+              />
+            </div>
             <ReactECharts option={options} />
             <style jsx>{`
-              .chart-container {
+              .flex {
                 display: flex;
-                flex-direction: column;
-                align-items: center;
+              }
 
-                margin-top: 40px;
+              .flex-col {
+                flex-direction: column;
+              }
+
+              .items-center {
+                align-items: center;
               }
             `}</style>
-          </div>
+          </>
         )}
       </Layout>
     </>

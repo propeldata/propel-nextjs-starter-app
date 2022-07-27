@@ -8,7 +8,9 @@ import { Layout } from '../../components'
 import { buildCounterChartConfig } from '../../utils'
 import { CounterQuery } from '../../graphql'
 
-const client = new GraphQLClient(process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2)
+const client = new GraphQLClient(
+  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
+)
 
 export default function Counter() {
   const [title, setTitle] = React.useState()
@@ -19,7 +21,7 @@ export default function Counter() {
   const { metricId } = router.query
 
   React.useEffect(() => {
-    async function fetchData () {
+    async function fetchData() {
       try {
         const accessToken = window.localStorage.getItem('accessToken')
         client.setHeader('authorization', 'Bearer ' + accessToken)
@@ -39,19 +41,9 @@ export default function Counter() {
   }, [metricId])
 
   return (
-    <Layout
-      appLink={
-        <Link href="/">
-          &larr; back to home
-        </Link>
-      }
-    >
-      <h1>
-        {title}
-      </h1>
-      <p>
-        {description}
-      </p>
+    <Layout appLink={<Link href="/">&larr; back to home</Link>}>
+      <h1>{title}</h1>
+      <p>{description}</p>
       {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
       <style jsx>{`
         .link-container {

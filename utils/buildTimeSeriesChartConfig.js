@@ -2,7 +2,7 @@ import { format } from 'date-fns'
 
 const baseConfig = {
   yAxis: {
-    type: 'value',
+    type: 'value'
   },
   tooltip: {
     trigger: 'axis'
@@ -15,15 +15,15 @@ const baseConfig = {
   }
 }
 
-export default function buildTimeSeriesChartConfig (timeSeries) {
+export default function buildTimeSeriesChartConfig(timeSeries) {
   return {
     ...baseConfig,
     xAxis: {
       data: timeSeries.labels,
       axisLabel: {
-        formatter: (function(value){
-          return format(new Date(value), 'MM/dd/yyyy');
-        })
+        formatter: function (value) {
+          return format(new Date(value), 'MM/dd/yyyy')
+        }
       }
     },
     series: [

@@ -29,7 +29,8 @@
   text-align: -webkit-center;
   text-align: -moz-center;
 
-  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px var(--sides-padding);
+  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px
+    var(--sides-padding);
 }
 
 .menu {

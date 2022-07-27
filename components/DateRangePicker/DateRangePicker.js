@@ -4,13 +4,8 @@ import DateFnsUtils from '@date-io/date-fns'
 
 import styles from './DateRangePicker.module.css'
 
-export default function DateRangePicker (props) {
-  const {
-    startDate,
-    stopDate,
-    setStartDate,
-    setStopDate
-  } = props
+export default function DateRangePicker(props) {
+  const { startDate, stopDate, setStartDate, setStopDate } = props
 
   const handleStartDateChange = (date) => {
     setStartDate(date)
@@ -28,14 +23,14 @@ export default function DateRangePicker (props) {
           onChange={handleStartDateChange}
           format="dd/MM/yyyy"
           label="From"
-          views={["year", "month", "date"]}
+          views={['year', 'month', 'date']}
         />
         <DatePicker
           value={stopDate}
           onChange={handleStopDateChange}
           format="dd/MM/yyyy"
           label="To"
-          views={["year", "month", "date"]}
+          views={['year', 'month', 'date']}
         />
       </div>
     </MuiPickersUtilsProvider>
