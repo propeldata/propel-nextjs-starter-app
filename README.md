@@ -20,7 +20,7 @@ Once you have built an Application inside Propel Data, you're ready to move on.
 
 ### Set up your local development environment
 
-Rename the `env.sample` file in the project's root directory to `.env.local`, then edit that file to contain your own API keys.
+Rename the `.env.sample` file in the project's root directory to `.env.local`, then edit that file to contain your own API keys.
 
 ```.env
 CLIENT_ID_SAMPLE_APP=1jb...
