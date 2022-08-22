@@ -80,19 +80,6 @@ export default function TimeSeries() {
               />
             </div>
             <ReactECharts option={options} />
-            <style jsx>{`
-              .flex {
-                display: flex;
-              }
-
-              .flex-col {
-                flex-direction: column;
-              }
-
-              .items-center {
-                align-items: center;
-              }
-            `}</style>
           </>
         )}
       </Layout>
