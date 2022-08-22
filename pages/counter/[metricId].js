@@ -45,16 +45,6 @@ export default function Counter() {
       <h1>{title}</h1>
       <p>{description}</p>
       {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
-      <style jsx>{`
-        .link-container {
-          margin-top: 20px;
-        }
-
-        .link {
-          color: var(--color-primary);
-          cursor: pointer;
-        }
-      `}</style>
     </Layout>
   )
 }
