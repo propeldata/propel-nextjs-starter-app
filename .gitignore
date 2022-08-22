@@ -37,10 +37,6 @@ bower_components
 # Demos
 pages/demos/
 
-# no yarn.lock
-yarn.lock
-yarn.lock
-
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
 
@@ -116,3 +112,12 @@ dist
 
 # Git log
 git-log.txt
+
+# We're using Yarn "Zero Installs"
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
