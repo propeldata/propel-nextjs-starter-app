@@ -4,14 +4,11 @@ import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import { DateRangePicker, Layout } from '../../components'
-import { CounterQuery, TimeSeriesQuery } from '../../graphql'
-import {
-  buildCounterChartConfig,
-  buildTimeSeriesChartConfig
-} from '../../utils'
+import { DateRangePicker, Layout } from '@/components'
+import { CounterQuery, TimeSeriesQuery } from '@/graphql'
+import { buildCounterChartConfig, buildTimeSeriesChartConfig } from '@/utils'
 
 const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
