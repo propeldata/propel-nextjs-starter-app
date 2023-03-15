@@ -1,22 +1,22 @@
 # Propel Demo Dashboard - NextJS & React
 
-This demo app uses Propel Data to display simple dashboards for your dataset.
+This demo app uses Propel to display simple dashboards for your dataset.
 
 ## How to use
 
-### Create an application using Propel Data
+### Create an application using Propel
 
-Follow the quickstart guide at https://docs.propeldata.com/quickstart/ to get started.
+You can find the API docs at https://www.propeldata.com/docs.
 
 You'll need to complete the following steps:
 
-1. Create an Account
+1. Create an Account at https://www.propeldata.com/request-access
 2. Connect a Data Source
 3. Create a Data Pool
 4. Define a Metric
 5. Build an Application
 
-Once you have built an Application inside Propel Data, you're ready to move on.
+Once you have built an Application inside Propel, you're ready to move on.
 
 ### Set up your local development environment
 
@@ -56,4 +56,4 @@ You'll find the granularity setting inside the `metric` portion of the GraphQL c
 
 By changing the granularity setting, you will change how your data is broken up in the time series visualization. These changes will automatically refresh in your web browser.
 
-You can read additional information in [Propel Data's GraphQL API docs](https://docs.propeldata.com/api/overview/), specifically on the page for `TimeSeriesInput` at https://docs.propeldata.com/api/reference/inputs/time-series-input/.
+You can read additional information in [Propel GraphQL API docs](https://www.propeldata.com/docs/api/about-the-graphql-api), specifically on the page for `TimeSeriesInput` at [TimeSeries Input reference docs](https://www.propeldata.com/docs/api/reference/inputs/TimeSeriesInput).
