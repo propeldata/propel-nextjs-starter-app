@@ -1,0 +1,7 @@
+
+query Metric($metricId: ID!) {
+  metric(id: $metricId) {
+    uniqueName
+    description
+  }
+}

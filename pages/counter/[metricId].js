@@ -1,21 +1,21 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { GraphQLClient, gql } from 'graphql-request'
-import ReactECharts from 'echarts-for-react'
+import { GraphQLClient } from 'graphql-request'
+import { Counter } from '@propeldata/react-counter'
 
 import { Layout } from '../../components'
-import { buildCounterChartConfig } from '../../utils'
-import { CounterQuery } from '../../graphql'
+import { MetricQuery } from '../../graphql'
 
 const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
 )
 
-export default function Counter() {
-  const [title, setTitle] = React.useState()
+export default function CounterPage() {
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
-  const [options, setOptions] = React.useState()
+  const [accessToken, setAccessToken] = React.useState()
 
   const router = useRouter()
   const { metricId } = router.query
@@ -23,16 +23,20 @@ export default function Counter() {
   React.useEffect(() => {
     async function fetchData() {
       try {
+        setIsLoading(true)
         const accessToken = window.localStorage.getItem('accessToken')
-        client.setHeader('authorization', 'Bearer ' + accessToken)
-        const { metric } = await client.request(CounterQuery, {
-          id: metricId
-        })
+        setAccessToken(accessToken)
+        client.setHeader('Authorization', `Bearer ${accessToken}`)
+        const response = await client.request(MetricQuery, { metricId })
+        const metric = response?.metric
 
-        setTitle(metric.uniqueName)
-        setDescription(metric.description)
-        setOptions(buildCounterChartConfig(metric.counter.value))
-      } catch (error) {}
+        setUniqueName(metric?.uniqueName)
+        setDescription(metric?.description)
+      } catch (error) {
+        console.log(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
     if (metricId) {
@@ -42,19 +46,41 @@ export default function Counter() {
 
   return (
     <Layout appLink={<Link href="/">&larr; back to home</Link>}>
-      <h1>{title}</h1>
-      <p>{description}</p>
-      {!options ? <p>Loading...</p> : <ReactECharts option={options} />}
-      <style jsx>{`
-        .link-container {
-          margin-top: 20px;
-        }
+      {isLoading ? (
+        'Loading...'
+      ) : (
+        <>
+          <h1>{uniqueName}</h1>
+          <p>{description}</p>
+          <Counter
+            query={{
+              metric: uniqueName,
+              accessToken,
+              timeRange: {
+                relative: 'LAST_N_DAYS',
+                n: 30
+              }
+            }}
+            styles={{
+              font: {
+                size: '2rem',
+                weight: 'bold',
+                color: '#0081F1'
+              }
+            }}
+          />
+          <style jsx>{`
+            .link-container {
+              margin-top: 20px;
+            }
 
-        .link {
-          color: var(--color-primary);
-          cursor: pointer;
-        }
-      `}</style>
+            .link {
+              color: var(--color-primary);
+              cursor: pointer;
+            }
+          `}</style>
+        </>
+      )}
     </Layout>
   )
 }
