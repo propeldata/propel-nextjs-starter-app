@@ -4,26 +4,25 @@ import Link from 'next/link'
 import Head from 'next/head'
 import { format } from 'date-fns'
 import { GraphQLClient } from 'graphql-request'
-import ReactECharts from 'echarts-for-react'
+import { TimeSeries } from '@propeldata/react-time-series'
 
 import { Layout, DateRangePicker } from '../../components'
-import { buildTimeSeriesChartConfig } from '../../utils'
-import { TimeSeriesQuery } from '../../graphql'
+import { MetricQuery } from '../../graphql'
 
 const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
 )
 
-export default function TimeSeries() {
-  const [title, setTitle] = React.useState('')
-  const [description, setDescription] = React.useState('')
-  const [options, setOptions] = React.useState()
-  const [startDate, setStartDate] = React.useState(
-    new Date('2021-01-01T10:00:00Z')
-  )
-  const [stopDate, setStopDate] = React.useState(
-    new Date('2022-05-21T10:00:00Z')
-  )
+const TODAY_DATE = new Date()
+const SIX_MONTHS_AGO_DATE = new Date(TODAY_DATE - 6 * 30 * 24 * 60 * 60 * 1000)
+
+export default function TimeSeriesPage() {
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [uniqueName, setUniqueName] = React.useState()
+  const [description, setDescription] = React.useState()
+  const [startDate, setStartDate] = React.useState(SIX_MONTHS_AGO_DATE)
+  const [stopDate, setStopDate] = React.useState(TODAY_DATE)
+  const [accessToken, setAccessToken] = React.useState()
 
   const router = useRouter()
   const { metricId } = router.query
@@ -31,30 +30,26 @@ export default function TimeSeries() {
   React.useEffect(() => {
     async function fetchData() {
       try {
+        setIsLoading(true)
         const accessToken = window.localStorage.getItem('accessToken')
-        client.setHeader('authorization', 'Bearer ' + accessToken)
+        setAccessToken(accessToken)
+        client.setHeader('Authorization', `Bearer ${accessToken}`)
+        const response = await client.request(MetricQuery, { metricId })
+        const metric = response?.metric
 
-        const start = format(startDate, 'yyyy-MM-dd')
-        const stop = format(stopDate, 'yyyy-MM-dd')
-
-        const { metric } = await client.request(TimeSeriesQuery, {
-          id: metricId,
-          start,
-          stop
-        })
-
-        setTitle(metric.uniqueName)
-        setDescription(metric.description)
-        setOptions(buildTimeSeriesChartConfig(metric.timeSeries))
+        setUniqueName(metric?.uniqueName)
+        setDescription(metric?.description)
       } catch (error) {
         console.log(error)
+      } finally {
+        setIsLoading(false)
       }
     }
 
-    if (startDate && stopDate && metricId) {
+    if (metricId) {
       fetchData()
     }
-  }, [startDate, stopDate, metricId])
+  }, [metricId])
 
   return (
     <>
@@ -63,15 +58,13 @@ export default function TimeSeries() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout appLink={<Link href="/">&larr; back to home</Link>}>
-        <h1>{title}</h1>
-
-        <p>{description}</p>
-
-        {!options ? (
-          <p>Loading...</p>
+        {isLoading ? (
+          'Loading...'
         ) : (
           <>
-            <div className="flex flex-col items-center">
+            <h1>{uniqueName}</h1>
+            <p>{description}</p>
+            <div className="flex flex-col items-center mb-2">
               <DateRangePicker
                 startDate={startDate}
                 stopDate={stopDate}
@@ -79,7 +72,18 @@ export default function TimeSeries() {
                 setStopDate={setStopDate}
               />
             </div>
-            <ReactECharts option={options} />
+            <TimeSeries
+              variant="bar"
+              query={{
+                metric: uniqueName,
+                accessToken,
+                timeRange: {
+                  start: format(startDate, 'yyyy-MM-dd'),
+                  stop: format(stopDate, 'yyyy-MM-dd')
+                },
+                granularity: 'WEEK'
+              }}
+            />
             <style jsx>{`
               .flex {
                 display: flex;
