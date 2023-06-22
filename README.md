@@ -1,4 +1,4 @@
-# Propel Demo Dashboard - NextJS & React
+# Propel NextJS Started App
 
 This demo app uses Propel to display simple dashboards for your dataset.
 
