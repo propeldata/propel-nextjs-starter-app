@@ -92,7 +92,7 @@ export default function App({ accessToken }) {
         <h1>
           Welcome to <a href="https://www.propeldata.com">Propel!</a>
         </h1>
-        <p>How developers build data products.</p>
+        <p>How developers build data applications.</p>
         <div className="select-container">
           {!metrics ? (
             'Loading...'

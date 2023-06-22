@@ -14,13 +14,13 @@ const client = new GraphQLClient(
 )
 
 const TODAY_DATE = new Date()
-const SIX_MONTHS_AGO_DATE = new Date(TODAY_DATE - 6 * 30 * 24 * 60 * 60 * 1000)
+const THIRTY_DAYS_AGO = new Date(TODAY_DATE - 30 * 24 * 60 * 60 * 1000)
 
 export default function TimeSeriesPage() {
   const [isLoading, setIsLoading] = React.useState(true)
   const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
-  const [startDate, setStartDate] = React.useState(SIX_MONTHS_AGO_DATE)
+  const [startDate, setStartDate] = React.useState(THIRTY_DAYS_AGO)
   const [stopDate, setStopDate] = React.useState(TODAY_DATE)
   const [accessToken, setAccessToken] = React.useState()
 
@@ -81,7 +81,7 @@ export default function TimeSeriesPage() {
                   start: format(startDate, 'yyyy-MM-dd'),
                   stop: format(stopDate, 'yyyy-MM-dd')
                 },
-                granularity: 'WEEK'
+                granularity: 'DAY'
               }}
             />
             <style jsx>{`
