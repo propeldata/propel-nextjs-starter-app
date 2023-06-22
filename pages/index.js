@@ -18,8 +18,8 @@ export async function getServerSideProps() {
    */
   const config = {
     client: {
-      id: process.env.CLIENT_ID_SAMPLE_APP,
-      secret: process.env.CLIENT_SECRET_SAMPLE_APP
+      id: process.env.CLIENT_ID,
+      secret: process.env.CLIENT_SECRET
     },
     auth: {
       tokenHost: process.env.TOKEN_HOST,
@@ -31,9 +31,7 @@ export async function getServerSideProps() {
    * Create the OAuth2 client
    */
   const oauth2Client = new ClientCredentials(config)
-  const tokenParams = {
-    scope: '<scope>'
-  }
+  const tokenParams = {}
 
   /**
    * Get a token using the client credentials
