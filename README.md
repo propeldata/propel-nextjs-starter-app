@@ -14,17 +14,22 @@ You'll need to complete the following steps:
 2. Connect a Data Source
 3. Create a Data Pool
 4. Define a Metric
-5. Build an Application
+5. Create a Propel Application
 
-Once you have built an Application inside Propel, you're ready to move on.
+Once you have created a Propel Application inside Propel, you're ready to move on.
 
 ### Set up your local development environment
 
-Rename the `.env.sample` file in the project's root directory to `.env.local`, then edit that file to contain your own API keys.
+Update the `.env.sample` file with your Propel Application client ID and secret.
+```bash
+CLIENT_ID=1jb...
+CLIENT_SECRET=1og...
+```
 
-```.env
-CLIENT_ID_SAMPLE_APP=1jb...
-CLIENT_SECRET_SAMPLE_APP=1og...
+Rename the `.env.sample` file in the project's root directory to `.env.local`.
+
+```bash
+mv .env.sample .env.local
 ```
 
 You'll find these API keys by navigating to https://console.propeldata.com/applications/, selecting your sample application, and looking at the section labeled **OAuth2 client credentials**.
@@ -33,7 +38,7 @@ Leave the other environment variables that are already present in that file, suc
 
 ### Run your local development server
 
-1. Run `yarn` to install the sample application's dependencies.
+1. Run `yarn` to install dependencies.
 2. Run `yarn dev` to launch the local development server.
 3. Browse to https://localhost:3000.
 4. Select your Metric from the drop-down menu.
