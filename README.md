@@ -1,26 +1,15 @@
 # Propel NextJS Started App
 
-This demo app uses Propel to display simple dashboards for your dataset.
+This Propel NextJS Starter App is a simple web application that demonstrates how to use the Propel GraphQL API to display data visualizations in a web browser.
 
-## How to use
+## Quickstart
 
-### Create an application using Propel
+For a step-by-step tutorial follow our [quickstart](https://www.propeldata.com/docs/quickstart).
 
-You can find the API docs at https://www.propeldata.com/docs.
-
-You'll need to complete the following steps:
-
-1. Create an Account at https://www.propeldata.com/request-access
-2. Connect a Data Source
-3. Create a Data Pool
-4. Define a Metric
-5. Create a Propel Application
-
-Once you have created a Propel Application inside Propel, you're ready to move on.
-
-### Set up your local development environment
+## Set up your local development environment
 
 Update the `.env.sample` file with your Propel Application client ID and secret.
+
 ```bash
 CLIENT_ID=1jb...
 CLIENT_SECRET=1og...
@@ -32,11 +21,11 @@ Rename the `.env.sample` file in the project's root directory to `.env.local`.
 mv .env.sample .env.local
 ```
 
-You'll find these API keys by navigating to https://console.propeldata.com/applications/, selecting your sample application, and looking at the section labeled **OAuth2 client credentials**.
+You'll find these API keys by navigating to https://console.propeldata.com/applications/, selecting your Propel Application, and looking at the section labeled "OAuth2 client credentials".
 
 Leave the other environment variables that are already present in that file, such as `TOKEN_HOST` and `TOKEN_PATH`.
 
-### Run your local development server
+## Run your local development server
 
 1. Run `yarn` to install dependencies.
 2. Run `yarn dev` to launch the local development server.
@@ -44,7 +33,7 @@ Leave the other environment variables that are already present in that file, suc
 4. Select your Metric from the drop-down menu.
 5. Choose one of the sample charts, either a time series or counter visualization.
 
-### Edit your GraphQL queries
+## Edit your GraphQL queries
 
 You can now try editing the \*.graphql files in the /graphql/ directory to change the visualizations. For example, you may want to view data on a month-to-month basis instead of looking at the data from week to week.
 
