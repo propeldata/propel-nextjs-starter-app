@@ -34,22 +34,3 @@ Leave the other environment variables that are already present in that file, suc
 3. Browse to https://localhost:3000.
 4. Select your Metric from the drop-down menu.
 5. Choose one of the sample charts, either a time series or counter visualization.
-
-## Edit your GraphQL queries
-
-You can now try editing the \*.graphql files in the /graphql/ directory to change the visualizations. For example, you may want to view data on a month-to-month basis instead of looking at the data from week to week.
-
-To do so, you just need to edit the `granularity: WEEK` statement in the `TimeSeriesQuery.graphql` file to read `granularity: MONTH` instead.
-
-You'll find the granularity setting inside the `metric` portion of the GraphQL call. Open up the `TimeSeriesQuery.graphql` file and look for the following:
-
-```gql
-  metric(id: $id) {
-    timeSeries(
-      input: {
-        granularity: WEEK
-```
-
-By changing the granularity setting, you will change how your data is broken up in the time series visualization. These changes will automatically refresh in your web browser.
-
-You can read additional information in [Propel GraphQL API docs](https://www.propeldata.com/docs/api/about-the-graphql-api), specifically on the page for `TimeSeriesInput` at [TimeSeries Input reference docs](https://www.propeldata.com/docs/api/reference/inputs/TimeSeriesInput).
