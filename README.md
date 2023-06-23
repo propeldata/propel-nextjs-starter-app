@@ -27,8 +27,8 @@ Leave the other environment variables that are already present in that file, suc
 
 ## Run your local development server
 
-1. Run `yarn` to install dependencies.
-2. Run `yarn dev` to launch the local development server.
+1. Run `npm install` to install dependencies.
+2. Run `npm start` to launch the local development server.
 3. Browse to https://localhost:3000.
 4. Select your Metric from the drop-down menu.
 5. Choose one of the sample charts, either a time series or counter visualization.

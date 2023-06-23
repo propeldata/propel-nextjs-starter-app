@@ -3,9 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
+    "start": "next dev",
     "format": "prettier --ignore-path .gitignore --write .",
     "lint": "eslint --fix .",
     "precommit": "yarn run lint && yarn run format",
