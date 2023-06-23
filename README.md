@@ -1,6 +1,6 @@
-# Propel NextJS Started App
+# Propel Next.js Started App
 
-This Propel NextJS Starter App is a simple web application that demonstrates how to use the Propel GraphQL API to display data visualizations in a web browser.
+This Propel Next.js Starter App is a simple web application that demonstrates how to use the Propel GraphQL API to display data visualizations in a web browser.
 
 ## Quickstart
 
@@ -10,17 +10,15 @@ For a step-by-step tutorial follow our [quickstart](https://www.propeldata.com/d
 
 ## Set up your local development environment
 
-Update the `.env.sample` file with your Propel Application client ID and secret.
+Copy the `.env.sample` file to `.env.local` and update with your Propel Application client ID and secret.
+
+```bash
+cp .env.sample .env.local
+```
 
 ```bash
 CLIENT_ID=1jb...
 CLIENT_SECRET=1og...
-```
-
-Rename the `.env.sample` file in the project's root directory to `.env.local`.
-
-```bash
-mv .env.sample .env.local
 ```
 
 You'll find these API keys by navigating to https://console.propeldata.com/applications/, selecting your Propel Application, and looking at the section labeled "OAuth2 client credentials".
