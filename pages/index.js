@@ -3,7 +3,7 @@ import router from 'next/router'
 import Head from 'next/head'
 import Link from 'next/link'
 import { ClientCredentials } from 'simple-oauth2'
-import { GraphQLClient, gql } from 'graphql-request'
+import { GraphQLClient } from 'graphql-request'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
 import FormControl from '@mui/material/FormControl'
@@ -31,7 +31,6 @@ export async function getServerSideProps() {
    * Create the OAuth2 client
    */
   const oauth2Client = new ClientCredentials(config)
-  const tokenParams = {}
 
   /**
    * Get a token using the client credentials
