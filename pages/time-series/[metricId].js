@@ -74,6 +74,15 @@ export default function TimeSeriesPage() {
             </div>
             <TimeSeries
               variant="bar"
+              styles={{
+                bar: {
+                  thickness: 15,
+                  borderWidth: '0',
+                  borderRadius: 2,
+                  borderColor: '#94A3B8',
+                  backgroundColor: '#CBD5E0'
+                }
+              }}
               query={{
                 metric: uniqueName,
                 accessToken,
