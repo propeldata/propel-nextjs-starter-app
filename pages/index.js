@@ -87,7 +87,13 @@ export default function App({ accessToken }) {
         <title>Propel Sample App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout appLink={<Link href="#">Docs</Link>}>
+      <Layout
+        appLink={
+          <Link href="https://www.propeldata.com/docs" target="_blank">
+            Docs
+          </Link>
+        }
+      >
         <h1>
           Welcome to <a href="https://www.propeldata.com">Propel!</a>
         </h1>
