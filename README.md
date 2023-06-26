@@ -6,7 +6,7 @@ This Propel Next.js Starter App is a simple web application that demonstrates ho
 
 For a step-by-step tutorial follow our [quickstart](https://www.propeldata.com/docs/quickstart).
 
-> ⚠️ **If you are using the TacoSoft demo data,**: make sure to provision a P1_MEDIUM Propeller in your Propel Application. The P1_X_SMALL or P1_SMALL Propellers are not sufficient to run the queries on this data set.
+> ⚠️ **If you are using the TacoSoft demo data,**: Make sure to provision a P1_MEDIUM Propeller in your Propel Application. The P1_X_SMALL or P1_SMALL Propellers are not sufficient to run the queries on this data set.
 
 ## Set up your local development environment
 
