@@ -136,6 +136,13 @@ export default function App({ accessToken }) {
             onClick={handleCardClick}
             disabled={!selectedMetric}
           />
+          <Card
+            title="Leaderboard"
+            description="Build your first Leaderboard Metric visualizations!"
+            pageRef="leaderboard"
+            onClick={handleCardClick}
+            disabled={!selectedMetric}
+          />
         </div>
 
         <style jsx>{`

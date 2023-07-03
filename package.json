@@ -32,6 +32,7 @@
     "@mui/material": "^5.13.6",
     "@mui/x-date-pickers": "^6.9.0",
     "@propeldata/react-counter": "^0.31.0-rc.0",
+    "@propeldata/react-leaderboard": "^0.5.4",
     "@propeldata/react-time-series": "^0.31.0-rc.0",
     "date-fns": "^2.28.0",
     "graphql": "^16.5.0",

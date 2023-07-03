@@ -31,6 +31,7 @@ export default function Card(props) {
 
           transition: color 0.15s ease, border-color 0.15s ease;
           cursor: pointer;
+          user-select: none;
         }
 
         .card:hover,
