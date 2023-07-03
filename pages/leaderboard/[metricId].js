@@ -37,8 +37,6 @@ export default function LeaderboardPage() {
     setDescription(metric?.description)
   }, [metric])
 
-  console.log({ metric })
-
   return (
     <>
       <Head>
