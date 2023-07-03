@@ -1,13 +1,14 @@
-import React from 'react'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import Head from 'next/head'
+import { TimeSeries } from '@propeldata/react-time-series'
 import { format } from 'date-fns'
 import { GraphQLClient } from 'graphql-request'
-import { TimeSeries } from '@propeldata/react-time-series'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import React from 'react'
 
-import { Layout, DateRangePicker } from '../../components'
+import { DateRangePicker, Layout } from '../../components'
 import { MetricQuery } from '../../graphql'
+import { useDataFetching } from '../../utils'
 
 const client = new GraphQLClient(
   process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
@@ -17,39 +18,24 @@ const TODAY_DATE = new Date()
 const THIRTY_DAYS_AGO = new Date(TODAY_DATE - 30 * 24 * 60 * 60 * 1000)
 
 export default function TimeSeriesPage() {
-  const [isLoading, setIsLoading] = React.useState(true)
   const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
   const [startDate, setStartDate] = React.useState(THIRTY_DAYS_AGO)
   const [stopDate, setStopDate] = React.useState(TODAY_DATE)
-  const [accessToken, setAccessToken] = React.useState()
 
   const router = useRouter()
   const { metricId } = router.query
 
+  const { isLoading, accessToken, metric } = useDataFetching(
+    client,
+    metricId,
+    MetricQuery
+  )
+
   React.useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true)
-        const accessToken = window.localStorage.getItem('accessToken')
-        setAccessToken(accessToken)
-        client.setHeader('Authorization', `Bearer ${accessToken}`)
-        const response = await client.request(MetricQuery, { metricId })
-        const metric = response?.metric
-
-        setUniqueName(metric?.uniqueName)
-        setDescription(metric?.description)
-      } catch (error) {
-        console.log(error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (metricId) {
-      fetchData()
-    }
-  }, [metricId])
+    setUniqueName(metric?.uniqueName)
+    setDescription(metric?.description)
+  }, [metric])
 
   return (
     <>
@@ -72,27 +58,29 @@ export default function TimeSeriesPage() {
                 setStopDate={setStopDate}
               />
             </div>
-            <TimeSeries
-              variant="bar"
-              styles={{
-                bar: {
-                  thickness: 15,
-                  borderWidth: '0',
-                  borderRadius: 2,
-                  borderColor: '#94A3B8',
-                  backgroundColor: '#CBD5E0'
-                }
-              }}
-              query={{
-                metric: uniqueName,
-                accessToken,
-                timeRange: {
-                  start: format(startDate, 'yyyy-MM-dd'),
-                  stop: format(stopDate, 'yyyy-MM-dd')
-                },
-                granularity: 'DAY'
-              }}
-            />
+            {uniqueName && (
+              <TimeSeries
+                variant="bar"
+                styles={{
+                  bar: {
+                    thickness: 15,
+                    borderWidth: '0',
+                    borderRadius: 2,
+                    borderColor: '#94A3B8',
+                    backgroundColor: '#CBD5E0'
+                  }
+                }}
+                query={{
+                  metric: uniqueName,
+                  accessToken,
+                  timeRange: {
+                    start: format(startDate, 'yyyy-MM-dd'),
+                    stop: format(stopDate, 'yyyy-MM-dd')
+                  },
+                  granularity: 'DAY'
+                }}
+              />
+            )}
             <style jsx>{`
               .flex {
                 display: flex;
