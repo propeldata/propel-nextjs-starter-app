@@ -1,10 +1,8 @@
 import { Counter } from '@propeldata/react-counter'
 import { GraphQLClient } from 'graphql-request'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
-
-import { Layout } from '../../components'
+import { Layout, Loader } from '../../components'
 import { MetricQuery } from '../../graphql'
 import { useDataFetching } from '../../utils'
 
@@ -31,13 +29,18 @@ export default function CounterPage() {
   }, [metric])
 
   return (
-    <Layout appLink={<Link href="/">&larr; back to home</Link>}>
+    <Layout
+      title={{
+        url: 'https://www.propeldata.com/docs/metrics/counter',
+        text: 'Counter'
+      }}
+    >
       {isLoading ? (
-        'Loading...'
+        <Loader />
       ) : (
         <>
-          <h1>{uniqueName}</h1>
-          <p>{description}</p>
+          <h4 style={{ marginTop: '2rem' }}>{uniqueName}</h4>
+          <p style={{ marginBottom: '2rem' }}>{description}</p>
           {uniqueName && (
             <Counter
               localize
@@ -59,16 +62,6 @@ export default function CounterPage() {
               }}
             />
           )}
-          <style jsx>{`
-            .link-container {
-              margin-top: 20px;
-            }
-
-            .link {
-              color: var(--color-primary);
-              cursor: pointer;
-            }
-          `}</style>
         </>
       )}
     </Layout>

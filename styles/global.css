@@ -1,14 +1,14 @@
 :root {
-  --color-primary: #1b91ff;
-  --sides-padding: 30px;
-  --appbar-height: 60px;
+  --color-default: #5d6b98;
+  --color-primary: #53389e;
+  --color-text-link: #2e90fa;
 }
 
 html,
 body {
-  font-family: Roboto, Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  font-size: 18px;
+  line-height: 24px;
+  font-size: 16px;
+  color: var(--color-default);
 }
 
 * {
@@ -18,7 +18,7 @@ body {
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--color-text-link);
   text-decoration: none;
 }
 
@@ -31,9 +31,39 @@ img {
   display: block;
 }
 
+h1 {
+  font-size: 3rem;
+  line-height: 120%;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 2.5rem;
+  line-height: 120%;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 2rem;
+  line-height: 130%;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1.5rem;
+  line-height: 140%;
+  font-weight: 600;
+}
+
+h5 {
+  font-size: 1.25rem;
+  line-height: 140%;
+  font-weight: 600;
+}
+
 @media (max-width: 600px) {
   html,
   body {
-    font-size: 16px;
+    font-size: 1rem;
   }
 }

@@ -18,7 +18,7 @@ export default function DateRangePicker(props) {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDateFns}>
-      <div className={styles.pickersWrapper}>
+      <div className={styles.root}>
         <DatePicker
           value={startDate}
           onChange={handleStartDateChange}

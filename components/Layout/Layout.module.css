@@ -1,32 +1,29 @@
-.container {
-  height: 100vh;
-}
-
-.appbar {
-  position: fixed;
-
+.header {
   display: flex;
+  padding: 1rem 2rem 1.4rem 2rem;
   justify-content: space-between;
   align-items: center;
-
-  width: 100%;
-  height: var(--appbar-height);
-
-  padding: 0px var(--sides-padding);
-
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+  margin-bottom: 5vw;
+  box-shadow: 0 8px 6px -6px rgba(0, 0, 0, 0.1);
 }
 
-.main {
-  justify-content: center;
+.header nav {
+  margin-top: 4px;
+}
+
+.container {
+  min-height: 100vh;
+  margin: auto;
+  margin-top: 1rem;
+  padding: 2rem;
   text-align: center;
-  text-align: -webkit-center;
-  text-align: -moz-center;
-
-  padding: calc(60px + var(--appbar-height)) var(--sides-padding) 0px
-    var(--sides-padding);
 }
 
-.menu {
-  font-size: 14px;
+@media (max-width: 600px) {
+  .header {
+    margin-bottom: 2rem;
+  }
+  .container {
+    min-width: 400px;
+  }
 }

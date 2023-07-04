@@ -1,15 +1,16 @@
-import React from 'react'
-import router from 'next/router'
-import Head from 'next/head'
-import Link from 'next/link'
-import { ClientCredentials } from 'simple-oauth2'
-import { GraphQLClient } from 'graphql-request'
+import FormControl from '@mui/material/FormControl'
 import InputLabel from '@mui/material/InputLabel'
 import MenuItem from '@mui/material/MenuItem'
-import FormControl from '@mui/material/FormControl'
 import Select from '@mui/material/Select'
+import { GraphQLClient } from 'graphql-request'
+import Head from 'next/head'
+import Image from 'next/image'
+import Link from 'next/link'
+import router from 'next/router'
+import React from 'react'
+import { ClientCredentials } from 'simple-oauth2'
 
-import { Layout, Card } from '../components'
+import { Card, Loader } from '../components'
 import { MetricsQuery } from '../graphql'
 
 export async function getServerSideProps() {
@@ -87,22 +88,32 @@ export default function App({ accessToken }) {
         <title>Propel Sample App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout
-        appLink={
-          <Link href="https://www.propeldata.com/docs" target="_blank">
-            Docs
-          </Link>
-        }
-      >
-        <h1>
-          Welcome to <a href="https://www.propeldata.com">Propel!</a>
-        </h1>
-        <p>How developers build data applications.</p>
+      <div className="container">
+        <Image
+          src="/logo-lg.svg"
+          width={153}
+          height={153}
+          alt="Propel"
+          style={{ margin: 'auto' }}
+        />
+        <Image
+          src="/logo-lg-text.svg"
+          width={218}
+          height={67}
+          alt="Propel"
+          style={{ margin: 'auto', marginBottom: 16 }}
+        />
+        <h5 style={{ marginBottom: '2rem' }}>
+          How developers build data applications.
+        </h5>
+        <Link href="https://www.propeldata.com/docs" target="_blank">
+          Documentation
+        </Link>
         <div className="select-container">
           {!metrics ? (
-            'Loading...'
+            <Loader />
           ) : (
-            <FormControl fullWidth sx={{ textAlign: 'left' }}>
+            <FormControl fullWidth sx={{ maxWidth: ['100%', 300] }}>
               <InputLabel id="select-metric-label">Select a Metric</InputLabel>
               <Select
                 labelId="select-metric-label"
@@ -146,33 +157,53 @@ export default function App({ accessToken }) {
         </div>
 
         <style jsx>{`
+          .container {
+            max-width: 1200px;
+            min-height: 100vh;
+            margin: auto;
+            margin-top: 1rem;
+            align-items: center;
+            text-align: center;
+            padding: 1rem;
+          }
+
           .grid {
             display: flex;
-            align-items: center;
+            align-items: stretch;
             justify-content: center;
             flex-wrap: wrap;
-
-            max-width: 800px;
-            margin-top: 2rem;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+            width: 100%;
+            display: grid;
+            grid-auto-rows: 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
           }
 
           .select-container {
-            margin-top: 2rem;
-            max-width: 300px;
-            height: 58.86px;
+            margin: 2rem 1rem 0 1rem;
+            height: 60px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
+            text-align: left;
             align-items: center;
           }
 
           @media (max-width: 600px) {
+            .container {
+              min-width: 400px;
+            }
             .grid {
               width: 100%;
               flex-direction: column;
+              grid-auto-rows: unset;
+              grid-template-columns: unset;
+              justify-content: stretch;
             }
           }
         `}</style>
-      </Layout>
+      </div>
     </>
   )
 }

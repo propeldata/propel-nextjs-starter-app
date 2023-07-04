@@ -2,11 +2,10 @@ import { Leaderboard } from '@propeldata/react-leaderboard'
 import { format } from 'date-fns'
 import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { DateRangePicker, Layout } from '../../components'
+import { DateRangePicker, Layout, Loader } from '../../components'
 import { MetricQuery } from '../../graphql'
 import { useDataFetching } from '../../utils'
 
@@ -43,21 +42,24 @@ export default function LeaderboardPage() {
         <title>Propel Sample Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout appLink={<Link href="/">&larr; back to home</Link>}>
+      <Layout
+        title={{
+          url: 'https://www.propeldata.com/docs/metrics/leaderboard',
+          text: 'Leaderboard'
+        }}
+      >
         {isLoading ? (
-          'Loading...'
+          <Loader />
         ) : (
           <>
-            <h1>{uniqueName}</h1>
+            <h4 style={{ marginTop: '2rem' }}>{uniqueName}</h4>
             <p>{description}</p>
-            <div className="flex flex-col items-center mb-2">
-              <DateRangePicker
-                startDate={startDate}
-                stopDate={stopDate}
-                setStartDate={setStartDate}
-                setStopDate={setStopDate}
-              />
-            </div>
+            <DateRangePicker
+              startDate={startDate}
+              stopDate={stopDate}
+              setStartDate={setStartDate}
+              setStopDate={setStopDate}
+            />
             {uniqueName && (
               <Leaderboard
                 variant="bar"
@@ -68,6 +70,9 @@ export default function LeaderboardPage() {
                     borderRadius: 2,
                     borderColor: '#94A3B8',
                     backgroundColor: '#CBD5E0'
+                  },
+                  canvas: {
+                    height: 400
                   }
                 }}
                 query={{
@@ -92,19 +97,6 @@ export default function LeaderboardPage() {
                 }}
               />
             )}
-            <style jsx>{`
-              .flex {
-                display: flex;
-              }
-
-              .flex-col {
-                flex-direction: column;
-              }
-
-              .items-center {
-                align-items: center;
-              }
-            `}</style>
           </>
         )}
       </Layout>
