@@ -69,7 +69,8 @@ export default function LeaderboardPage() {
                     borderWidth: '0',
                     borderRadius: 2,
                     borderColor: '#94A3B8',
-                    backgroundColor: '#CBD5E0'
+                    backgroundColor: '#6941C6',
+                    hoverBackgroundColor: 'rgba(158, 119, 237, 0.60)'
                   },
                   canvas: {
                     height: 400

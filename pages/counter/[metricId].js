@@ -57,7 +57,7 @@ export default function CounterPage() {
                 font: {
                   size: '2rem',
                   weight: 'bold',
-                  color: '#0081F1'
+                  color: '#6941C6'
                 }
               }}
             />

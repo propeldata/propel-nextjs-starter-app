@@ -53,10 +53,15 @@
   background-image: url('/arrow-right-active.svg');
 }
 
+.root:not(.disabled):hover h4,
+.root:not(.disabled):focus h4,
+.root:not(.disabled):active h4 {
+  color: var(--color-primary);
+}
+
 .root h4 {
   margin-right: 0.5rem;
   font-size: 1.5rem;
-  color: var(--color-primary);
 }
 
 .root p {
