@@ -1,39 +1,40 @@
 import { Leaderboard } from '@propeldata/react-leaderboard'
 import { format } from 'date-fns'
-import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { DateRangePicker, Layout, Loader } from '../../components'
-import { MetricQuery } from '../../graphql'
+import {
+  DateRangePicker,
+  Layout,
+  Loader,
+  DimensionsSelect
+} from '../../components'
 import { useDataFetching } from '../../utils'
 
-const client = new GraphQLClient(
-  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
-)
-
 const TODAY_DATE = new Date()
-const THIRTY_DAYS_AGO = new Date(TODAY_DATE - 30 * 24 * 60 * 60 * 1000)
+const FOURTEEN_DAYS_AGO = new Date(TODAY_DATE - 14 * 24 * 60 * 60 * 1000)
 
 export default function LeaderboardPage() {
   const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
-  const [startDate, setStartDate] = React.useState(THIRTY_DAYS_AGO)
+  const [dimensionsList, setDimensionsList] = React.useState()
+  const [dimensions, setDimensions] = React.useState([])
+  const [startDate, setStartDate] = React.useState(FOURTEEN_DAYS_AGO)
   const [stopDate, setStopDate] = React.useState(TODAY_DATE)
 
   const router = useRouter()
   const { metricId } = router.query
 
-  const { isLoading, accessToken, metric } = useDataFetching(
-    client,
-    metricId,
-    MetricQuery
-  )
+  const { isLoading, accessToken, metric } = useDataFetching(metricId)
 
   React.useEffect(() => {
-    setUniqueName(metric?.uniqueName)
-    setDescription(metric?.description)
+    if (!metric) {
+      return
+    }
+    setUniqueName(metric.uniqueName)
+    setDescription(metric.description)
+    setDimensionsList(metric.dimensions)
   }, [metric])
 
   return (
@@ -60,7 +61,17 @@ export default function LeaderboardPage() {
               setStartDate={setStartDate}
               setStopDate={setStopDate}
             />
-            {uniqueName && (
+            <DimensionsSelect
+              dimensionsList={dimensionsList}
+              dimensions={dimensions}
+              setDimensions={setDimensions}
+            />
+            {dimensions.length === 0 && (
+              <div style={{ margin: '3em auto' }}>
+                Please select a dimension
+              </div>
+            )}
+            {uniqueName && dimensions.length > 0 && (
               <Leaderboard
                 variant="bar"
                 styles={{
@@ -84,17 +95,7 @@ export default function LeaderboardPage() {
                     stop: format(stopDate, 'yyyy-MM-dd')
                   },
                   rowLimit: 8,
-                  dimensions: [
-                    {
-                      columnName: 'sauce_name'
-                    },
-                    {
-                      columnName: 'taco_name'
-                    },
-                    {
-                      columnName: 'restaurant_name'
-                    }
-                  ]
+                  dimensions
                 }}
               />
             )}

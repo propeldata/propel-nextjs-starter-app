@@ -1,14 +1,8 @@
 import { Counter } from '@propeldata/react-counter'
-import { GraphQLClient } from 'graphql-request'
 import { useRouter } from 'next/router'
 import React from 'react'
 import { Layout, Loader } from '../../components'
-import { MetricQuery } from '../../graphql'
 import { useDataFetching } from '../../utils'
-
-const client = new GraphQLClient(
-  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
-)
 
 export default function CounterPage() {
   const [uniqueName, setUniqueName] = React.useState()
@@ -17,11 +11,7 @@ export default function CounterPage() {
   const router = useRouter()
   const { metricId } = router.query
 
-  const { isLoading, accessToken, metric } = useDataFetching(
-    client,
-    metricId,
-    MetricQuery
-  )
+  const { isLoading, accessToken, metric } = useDataFetching(metricId)
 
   React.useEffect(() => {
     setUniqueName(metric?.uniqueName)
@@ -50,7 +40,7 @@ export default function CounterPage() {
                 accessToken,
                 timeRange: {
                   relative: 'LAST_N_DAYS',
-                  n: 30
+                  n: 14
                 }
               }}
               styles={{

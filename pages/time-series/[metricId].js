@@ -1,35 +1,25 @@
 import { TimeSeries } from '@propeldata/react-time-series'
 import { format } from 'date-fns'
-import { GraphQLClient } from 'graphql-request'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 import { DateRangePicker, Layout, Loader } from '../../components'
-import { MetricQuery } from '../../graphql'
 import { useDataFetching } from '../../utils'
 
-const client = new GraphQLClient(
-  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
-)
-
 const TODAY_DATE = new Date()
-const THIRTY_DAYS_AGO = new Date(TODAY_DATE - 30 * 24 * 60 * 60 * 1000)
+const FOURTEEN_DAYS_AGO = new Date(TODAY_DATE - 14 * 24 * 60 * 60 * 1000)
 
 export default function TimeSeriesPage() {
   const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
-  const [startDate, setStartDate] = React.useState(THIRTY_DAYS_AGO)
+  const [startDate, setStartDate] = React.useState(FOURTEEN_DAYS_AGO)
   const [stopDate, setStopDate] = React.useState(TODAY_DATE)
 
   const router = useRouter()
   const { metricId } = router.query
 
-  const { isLoading, accessToken, metric } = useDataFetching(
-    client,
-    metricId,
-    MetricQuery
-  )
+  const { isLoading, accessToken, metric } = useDataFetching(metricId)
 
   React.useEffect(() => {
     setUniqueName(metric?.uniqueName)

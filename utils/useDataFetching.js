@@ -1,6 +1,12 @@
+import { GraphQLClient } from 'graphql-request'
 import React from 'react'
+import { MetricQuery } from '../graphql'
 
-export default function useDataFetching(client, metricId, MetricQuery) {
+const client = new GraphQLClient(
+  process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT_US_EAST_2
+)
+
+export default function useDataFetching(metricId) {
   const [isLoading, setIsLoading] = React.useState(true)
   const [accessToken, setAccessToken] = React.useState()
   const [metric, setMetric] = React.useState()
@@ -24,7 +30,7 @@ export default function useDataFetching(client, metricId, MetricQuery) {
     if (metricId) {
       fetchData()
     }
-  }, [client, metricId, MetricQuery])
+  }, [metricId])
 
   return {
     isLoading,
