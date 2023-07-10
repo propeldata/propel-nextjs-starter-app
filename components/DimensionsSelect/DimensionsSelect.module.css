@@ -1,0 +1,10 @@
+.root {
+  margin: 2rem auto;
+  width: 500px;
+}
+
+@media (max-width: 600px) {
+  .root {
+    width: 100%;
+  }
+}

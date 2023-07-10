@@ -29,6 +29,7 @@
     "@date-io/date-fns": "^2.16.0",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mui/icons-material": "^5.13.7",
     "@mui/material": "^5.13.6",
     "@mui/x-date-pickers": "^6.9.1",
     "@propeldata/react-counter": "^0.31.0-rc.0",
