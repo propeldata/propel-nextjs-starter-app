@@ -10,10 +10,10 @@ For a step-by-step tutorial follow our [quickstart](https://www.propeldata.com/d
 
 ## Set up your local development environment
 
-Copy the `.env.sample` file to `.env.local` and update with your Propel Application client ID and secret.
+Copy the `.env.local.sample` file to `.env.local` and update with your Propel Application client ID and secret.
 
 ```bash
-cp .env.sample .env.local
+cp .env.local.sample .env.local
 ```
 
 ```bash
