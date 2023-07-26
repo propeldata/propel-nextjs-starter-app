@@ -1,18 +1,25 @@
-import { TimeSeries } from '@propeldata/react-time-series'
+import { Leaderboard } from '@propeldata/react-leaderboard'
 import { format } from 'date-fns'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { DateRangePicker, Layout, Loader } from '../../components'
+import {
+  DateRangePicker,
+  Layout,
+  Loader,
+  DimensionsSelect
+} from '../../components'
 import { useDataFetching } from '../../utils'
 
 const TODAY_DATE = new Date()
 const FOURTEEN_DAYS_AGO = new Date(TODAY_DATE - 14 * 24 * 60 * 60 * 1000)
 
-export default function TimeSeriesPage() {
+export default function LeaderboardPage() {
   const [uniqueName, setUniqueName] = React.useState()
   const [description, setDescription] = React.useState()
+  const [dimensionsList, setDimensionsList] = React.useState()
+  const [dimensions, setDimensions] = React.useState([])
   const [startDate, setStartDate] = React.useState(FOURTEEN_DAYS_AGO)
   const [stopDate, setStopDate] = React.useState(TODAY_DATE)
 
@@ -22,20 +29,24 @@ export default function TimeSeriesPage() {
   const { isLoading, accessToken, metric } = useDataFetching(metricId)
 
   React.useEffect(() => {
-    setUniqueName(metric?.uniqueName)
-    setDescription(metric?.description)
+    if (!metric) {
+      return
+    }
+    setUniqueName(metric.uniqueName)
+    setDescription(metric.description)
+    setDimensionsList(metric.dimensions)
   }, [metric])
 
   return (
     <>
       <Head>
-        <title>Propel Sample Time Series</title>
+        <title>Propel Sample Leaderboard</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout
         title={{
-          url: 'https://www.propeldata.com/docs/metrics/time-series',
-          text: 'Time Series'
+          url: 'https://www.propeldata.com/docs/metrics/leaderboard',
+          text: 'Leaderboard'
         }}
       >
         {isLoading ? (
@@ -50,8 +61,18 @@ export default function TimeSeriesPage() {
               setStartDate={setStartDate}
               setStopDate={setStopDate}
             />
-            {uniqueName && (
-              <TimeSeries
+            <DimensionsSelect
+              dimensionsList={dimensionsList}
+              dimensions={dimensions}
+              setDimensions={setDimensions}
+            />
+            {dimensions.length === 0 && (
+              <div style={{ margin: '3em auto' }}>
+                Please select a dimension
+              </div>
+            )}
+            {uniqueName && dimensions.length > 0 && (
+              <Leaderboard
                 variant="bar"
                 styles={{
                   bar: {
@@ -73,7 +94,8 @@ export default function TimeSeriesPage() {
                     start: format(startDate, 'yyyy-MM-dd'),
                     stop: format(stopDate, 'yyyy-MM-dd')
                   },
-                  granularity: 'DAY'
+                  rowLimit: 8,
+                  dimensions
                 }}
               />
             )}
