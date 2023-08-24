@@ -64,9 +64,10 @@ export default function App({ accessToken }) {
       try {
         client.setHeader('authorization', 'Bearer ' + accessToken)
         const { metrics } = await client.request(MetricsQuery)
-
         setMetrics(metrics)
-      } catch (error) {}
+      } catch (error) {
+        alert(`An error occurred: ${error.message}`)
+      }
     }
 
     if (accessToken) {
