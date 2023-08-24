@@ -1,4 +1,4 @@
-# Propel Next.js Started App
+# Propel Next.js Starter App
 
 This Propel Next.js Starter App is a simple web application that demonstrates how to use the Propel GraphQL API to display data visualizations in a web browser.
 
