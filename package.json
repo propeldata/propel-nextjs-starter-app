@@ -36,7 +36,7 @@
     "@propeldata/react-leaderboard": "^0.5.4",
     "@propeldata/react-time-series": "^0.31.0-rc.0",
     "date-fns": "^2.30.0",
-    "graphql": "^16.7.1",
+    "graphql": "^16.8.1",
     "graphql-request": "^6.1.0",
     "graphql-tag": "^2.12.6",
     "next": "^13.5.4",
